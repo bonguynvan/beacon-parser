@@ -1,5 +1,5 @@
 {
   "url": "https://metrics.example.com/b/ss/examplecompanyprod/1/H29-1a2b3c4d5e6f",
   "method": "POST",
-  "body": "pageName=product-listing&g=https%3A%2F%2Fwww.example.com%2Fshop%2Fwidgets&r=https%3A%2F%2Fwww.example.com%2Fhome&v2=fake-evar-2&v10=fake-evar-10&c5=fake-prop-5&c20=fake-prop-20&h1=Category%2FSubcategory&list1=itemA%2CitemB%2CitemC&events=event3%2Cevent7&mid=11111111111111111111111111111111"
+  "body": "pageName=product-listing&g=https%3A%2F%2Fwww.example.com%2Fshop%2Fwidgets&r=https%3A%2F%2Fwww.example.com%2Fhome&v2=fake-evar-2&v10=fake-evar-10&c5=fake-prop-5&c20=fake-prop-20&h1=Category%2FSubcategory&l1=itemA%2CitemB%2CitemC&events=event3%2Cevent7&mid=11111111111111111111111111111111"
 }

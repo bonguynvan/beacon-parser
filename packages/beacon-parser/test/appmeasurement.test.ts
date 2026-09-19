@@ -91,30 +91,43 @@ describe("AppMeasurement parsing", () => {
   });
 
   describe("list1-3 delimiter option", () => {
-    it("defaults to splitting on comma when no option is given", () => {
+    it("recognizes the wire-level key l1 (not the JS var name list1) as a list", () => {
+      // Adobe's official query-parameters reference: l1-l3 on the wire,
+      // s.list1-s.list3 is only the JS variable name that produces it.
+      const hit = parseAM("https://example.com/b/ss/rsid/1/code?l1=a,b,c");
+      expect(hit.lists["1"]).toEqual(["a", "b", "c"]);
+    });
+
+    it("does not misparse a literal list1 query key as a list variable", () => {
       const hit = parseAM("https://example.com/b/ss/rsid/1/code?list1=a,b,c");
+      expect(hit.lists).toEqual({});
+      expect(hit.unknown).toEqual({ list1: "a,b,c" });
+    });
+
+    it("defaults to splitting on comma when no option is given", () => {
+      const hit = parseAM("https://example.com/b/ss/rsid/1/code?l1=a,b,c");
       expect(hit.lists["1"]).toEqual(["a", "b", "c"]);
     });
 
     it("splits on a custom delimiter when listDelimiter is provided", () => {
-      const hit = parseAMWithOptions("https://example.com/b/ss/rsid/1/code?list1=a%7Cb%7Cc", {
+      const hit = parseAMWithOptions("https://example.com/b/ss/rsid/1/code?l1=a%7Cb%7Cc", {
         listDelimiter: "|"
       });
       expect(hit.lists["1"]).toEqual(["a", "b", "c"]);
     });
 
     it("does not split on comma when a custom delimiter is configured", () => {
-      const hit = parseAMWithOptions("https://example.com/b/ss/rsid/1/code?list1=a,b%7Cc", {
+      const hit = parseAMWithOptions("https://example.com/b/ss/rsid/1/code?l1=a,b%7Cc", {
         listDelimiter: "|"
       });
       expect(hit.lists["1"]).toEqual(["a,b", "c"]);
     });
 
     it("preserves the raw un-split value regardless of the delimiter option", () => {
-      const hit = parseAMWithOptions("https://example.com/b/ss/rsid/1/code?list1=a%7Cb%7Cc", {
+      const hit = parseAMWithOptions("https://example.com/b/ss/rsid/1/code?l1=a%7Cb%7Cc", {
         listDelimiter: "|"
       });
-      expect(hit.raw["list1"]).toBe("a|b|c");
+      expect(hit.raw["l1"]).toBe("a|b|c");
     });
   });
 });

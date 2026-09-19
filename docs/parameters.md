@@ -19,7 +19,7 @@ surfaced under `unknown` (never dropped, never guessed at).
 | `c1`–`c75` | Props | `props["1"]`–`props["75"]` |
 | `v1`–`v250` | eVars | `eVars["1"]`–`eVars["250"]` |
 | `h1`–`h5` | Hierarchies | `hierarchies["1"]`–`hierarchies["5"]` |
-| `list1`–`list3` | Lists (comma-separated values) | `lists["1"]`–`lists["3"]` |
+| `l1`–`l3` | Lists — **wire key is `l1`-`l3`, not `list1`-`list3`**; `list1`-`list3` is only the JS variable name (`s.list1`) that produces it | `lists["1"]`–`lists["3"]` |
 | `c.<key>`, `c.<a>.<b>` | Context data, dot-nested | `contextData` (nested object) |
 | `rsid` | Report suite id (query override) | `reportSuiteId` |
 
@@ -53,11 +53,16 @@ They are not documented as combinable on the same event; if a token contains
 both `:` and `=`, whichever comes first is treated as the delimiter and the
 rest of the token (including the other character) becomes that field's value.
 
-## `list1`–`list3` delimiter option
+## `l1`–`l3` delimiter option
 
-The delimiter between values in a list variable is **configured per report
-suite** (comma is the common default, but pipe/colon/etc. are equally valid
-admin-side choices) — see [list variables](https://experienceleague.adobe.com/en/docs/analytics/implementation/vars/page-vars/list).
+The wire key for list variables is `l1`-`l3` — `list1`-`list3` is only the
+JS variable name (`s.list1`) that produces it on the wire. See
+[query params](https://experienceleague.adobe.com/en/docs/analytics/implementation/validate/query-parameters)
+(exact row: `l1`-`l3` | `list1`-`list3` | "List variables.").
+
+The delimiter between values in a list variable is also **configured per
+report suite** (comma is the common default, but pipe/colon/etc. are equally
+valid admin-side choices) — see [list variables](https://experienceleague.adobe.com/en/docs/analytics/implementation/vars/page-vars/list).
 This parser splits on comma by default; pass `{ listDelimiter: "|" }` (or
 whatever your report suite uses) as the second argument to `parseHit()` when
 you know it's configured differently:
@@ -66,7 +71,7 @@ you know it's configured differently:
 parseHit(input, { listDelimiter: "|" });
 ```
 
-`raw["list1"]` always holds the original un-split string regardless of which
+`raw["l1"]` always holds the original un-split string regardless of which
 delimiter (if any) was used to populate `lists["1"]`.
 
 ## Context data nesting

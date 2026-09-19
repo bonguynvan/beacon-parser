@@ -21,6 +21,12 @@ tracking-plan-as-code, AppMeasurement -> Web SDK codemod, any UI.
 - Client-side only. Never claim the parser verifies what appears in Adobe reports.
 - Do not invent Adobe parameters. If unsure about a parameter's meaning, mark it
   `TODO: verify against Adobe docs` instead of guessing.
+- When verifying a parameter, prefer Adobe's canonical wire-level reference —
+  https://experienceleague.adobe.com/en/docs/analytics/implementation/validate/query-parameters
+  — over a JS-variable-name doc page. The JS variable name (`s.list1`) and
+  the wire key (`l1`) are sometimes different; the `l1`-vs-`list1` bug this
+  project shipped (see Domain notes) is exactly what happens when you verify
+  against the wrong one of the two.
 
 ## Privacy and IP (critical, repo is public — hardest category to fix after the fact)
 - Personal repo and machine only. Never use hits, schemas, report suite IDs,
@@ -81,7 +87,9 @@ tracking-plan-as-code, AppMeasurement -> Web SDK codemod, any UI.
 Cross-checked against Experience League docs (2026-09). Re-verify before
 adding new param mappings — prefer WebFetch/WebSearch on
 experienceleague.adobe.com over memory.
-- Props: `c1-c75`, eVars: `v1-v250`, hierarchies: `h1-h5`, lists: `list1-3`.
+- Props: `c1-c75`, eVars: `v1-v250`, hierarchies: `h1-h5`, lists: **`l1-l3`
+  on the wire** (`list1-3` is only the JS variable name — see below, this
+  was a real bug, not just a naming nit).
 - Context data uses `c.key=value` with `c.a.b=value` dot-path nesting.
 - `events` is comma-delimited. Two independent, unrelated suffixes exist:
   - `=` sets/increments a numeric event value, e.g. `event1=5`.
@@ -104,12 +112,23 @@ experienceleague.adobe.com over memory.
   - `pe=lnk_e` → **exit** link
   `pev2` = link name; `pev1` = link URL (used as the display fallback only
   when `pev2` is absent). Source: https://experienceleague.adobe.com/en/docs/analytics/components/dimensions/custom-link
-- `list1-3` values are `,`-joined by AppMeasurement's default plugin
-  behavior, **but the delimiter is configurable per report suite** (comma,
-  pipe, colon, etc. are all valid admin-side choices). `parseHit()` defaults
-  to comma but takes an optional second `ParseHitOptions` argument —
+- **List wire key is `l1`/`l2`/`l3`, not `list1`/`list2`/`list3`.** Adobe's
+  query-parameters reference gives the mapping explicitly: wire `l1-l3` ↔
+  JS var `s.list1`-`s.list3`. The parser originally matched `list1-3`
+  literally — a real bug (every real captured hit would have silently
+  landed its list values in `unknown` instead of `lists`), fixed 2026-09.
+  If you're tempted to "clean up" `LIST_RE` back to `/^list([1-3])$/`
+  because it reads more consistently with the JS variable name, don't —
+  re-read this note and the source link first.
+  Source: https://experienceleague.adobe.com/en/docs/analytics/implementation/validate/query-parameters
+  (exact row: `l1`-`l3` | `list1`-`list3` | "List variables."), corroborated by
+  https://experienceleague.adobe.com/en/docs/analytics/implementation/vars/page-vars/list
+- List values are `,`-joined by AppMeasurement's default plugin behavior,
+  **but the delimiter is configurable per report suite** (comma, pipe,
+  colon, etc. are all valid admin-side choices). `parseHit()` defaults to
+  comma but takes an optional second `ParseHitOptions` argument —
   `{ listDelimiter: "|" }` — for callers who know their report suite uses
-  something else (fixed 2026-09). `raw["listN"]` always keeps the un-split
+  something else (fixed 2026-09). `raw["lN"]` always keeps the un-split
   original regardless of the delimiter used.
   Source: https://experienceleague.adobe.com/en/docs/analytics/implementation/vars/page-vars/list
 - Long hits may switch to POST. First-party CNAME domains change the host, so
