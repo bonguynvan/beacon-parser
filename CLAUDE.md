@@ -99,7 +99,11 @@ experienceleague.adobe.com over memory.
   fields (fixed 2026-09, see `fixtures/appmeasurement/09-event-serialization-id`).
   Not documented as combinable on one event; if both appear in one token,
   whichever delimiter comes first wins and the rest of the token becomes
-  that field's raw value.
+  that field's raw value. `appmeasurement/events.ts` and `products.ts` share
+  one `parseEventToken()` — products.ts had the exact same `=`-only gap
+  until 2026-09 (see `fixtures/appmeasurement/11-product-event-serialization`);
+  if you ever add a third place that parses "eventN..." tokens, reuse
+  `parseEventToken` rather than re-deriving the `=`/`:` logic again.
   Source: https://experienceleague.adobe.com/en/docs/analytics/implementation/vars/page-vars/events/event-serialization
 - `products` is a `,`-separated list of entries, each `;`-delimited as
   `category;product;quantity;price;events;eVars`. Within one entry, both

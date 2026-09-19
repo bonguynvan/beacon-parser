@@ -43,6 +43,9 @@ category;name;quantity;price;events;eVars
   not comma-separated — commas are already used to delimit products.
 - `eVars` within a product entry is also pipe-separated, as `evarN=value` pairs
   (merchandising eVars), e.g. `evar5=blue|evar10=size-m`.
+- The `=` / `:` distinction from top-level `events` (below) applies here too
+  — `event1=5|event2:txn-abc123` parses to a numeric value on `event1` and a
+  serialization id on `event2`.
 
 ## Event serialization
 
@@ -52,6 +55,8 @@ distinct from `event3=5` (numeric value) — see
 They are not documented as combinable on the same event; if a token contains
 both `:` and `=`, whichever comes first is treated as the delimiter and the
 rest of the token (including the other character) becomes that field's value.
+Applies both to the top-level `events` param and to events nested inside a
+`products` entry — both call the same internal token parser.
 
 ## `l1`–`l3` delimiter option
 

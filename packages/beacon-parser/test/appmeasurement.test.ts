@@ -88,6 +88,28 @@ describe("AppMeasurement parsing", () => {
       const hit = parseAM("https://example.com/b/ss/rsid/1/code?events=purchase");
       expect(hit.events).toEqual([{ id: "purchase" }]);
     });
+
+    it("keeps both forms as separate entries when the same event id appears twice", () => {
+      // e.g. one call sets a numeric value, a later re-fire attaches a dedup id
+      // for the same event number — not deduped by id, both entries preserved.
+      const hit = parseAM("https://example.com/b/ss/rsid/1/code?events=event1=5,event1:abc123");
+      expect(hit.events).toEqual([
+        { id: "event1", value: 5 },
+        { id: "event1", serializationId: "abc123" }
+      ]);
+    });
+
+    it("also extracts serialization ids from events *within* a product entry", () => {
+      // products.ts had the same = -vs- : gap as the top-level events.ts fix;
+      // this locks in that it's fixed too and stays fixed.
+      const hit = parseAM(
+        "https://example.com/b/ss/rsid/1/code?products=Widgets%3BWidget%20A%3B1%3B10.00%3Bevent1%3D5%7Cevent2%3Atxn-abc123"
+      );
+      expect(hit.products[0]?.events).toEqual([
+        { id: "event1", value: 5 },
+        { id: "event2", serializationId: "txn-abc123" }
+      ]);
+    });
   });
 
   describe("list1-3 delimiter option", () => {

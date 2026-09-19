@@ -1,0 +1,4 @@
+{
+  "url": "https://metrics.example.com/b/ss/examplecompanyprod/1/H29-0d1e2f3a4b5c?pageName=cart&events=scAdd&products=Widgets%3BFake%20Widget%20A%3B3%3B29.99%3Bevent1%3D5%7Cevent2%3Atxn-FAKE-001%3Bevar5%3Dfake-merch-5",
+  "method": "GET"
+}

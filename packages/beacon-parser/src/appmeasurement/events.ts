@@ -17,7 +17,12 @@ export function parseEvents(raw: string | undefined): EventEntry[] {
     .map(parseEventToken);
 }
 
-function parseEventToken(token: string): EventEntry {
+/**
+ * Parses a single "eventN", "eventN=value", or "eventN:serializationId"
+ * token. Shared with products.ts, which uses the same "=" / ":" suffixes on
+ * pipe-delimited event tokens within a product entry.
+ */
+export function parseEventToken(token: string): EventEntry {
   const colonIndex = token.indexOf(":");
   const eqIndex = token.indexOf("=");
 

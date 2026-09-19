@@ -1,0 +1,24 @@
+{
+  "kind": "appmeasurement",
+  "reportSuiteId": "examplecompanyprod",
+  "version": "1",
+  "requestType": "ss",
+  "linkTrackingType": null,
+  "pageName": "checkout",
+  "events": [
+    { "id": "event1", "value": 5 },
+    { "id": "event1", "serializationId": "abc123" },
+    { "id": "event2" }
+  ],
+  "props": {},
+  "eVars": {},
+  "hierarchies": {},
+  "lists": {},
+  "products": [],
+  "contextData": {},
+  "raw": {
+    "pageName": "checkout",
+    "events": "event1=5,event1:abc123,event2"
+  },
+  "unknown": {}
+}

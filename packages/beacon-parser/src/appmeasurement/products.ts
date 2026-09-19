@@ -1,4 +1,5 @@
-import type { EventEntry, ProductEntry } from "../types.js";
+import type { ProductEntry } from "../types.js";
+import { parseEventToken } from "./events.js";
 
 /**
  * Parses the AppMeasurement `products` param: a `,`-separated list of
@@ -43,21 +44,14 @@ function parseProductEntry(entry: string): ProductEntry {
   return product;
 }
 
-function parseProductEvents(raw: string | undefined): EventEntry[] {
+function parseProductEvents(raw: string | undefined) {
   if (!raw) return [];
 
   return raw
     .split("|")
     .map((part) => part.trim())
     .filter((part) => part.length > 0)
-    .map((part): EventEntry => {
-      const eqIndex = part.indexOf("=");
-      if (eqIndex === -1) return { id: part };
-
-      const id = part.slice(0, eqIndex);
-      const value = Number(part.slice(eqIndex + 1));
-      return Number.isFinite(value) ? { id, value } : { id };
-    });
+    .map(parseEventToken);
 }
 
 function parseMerchandisingEVars(raw: string | undefined): Record<string, string> {
