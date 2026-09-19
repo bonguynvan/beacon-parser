@@ -8,6 +8,18 @@ export interface HitInput {
 
 export type HitType = "appmeasurement" | "websdk" | "unknown";
 
+export interface ParseHitOptions {
+  /**
+   * Delimiter used to split list1-3 values into arrays. Defaults to ",".
+   * AppMeasurement's list variables use a delimiter configured per report
+   * suite (comma is the common default, but not guaranteed) — pass this
+   * when you know a report suite uses something else. Ignored for Web SDK
+   * hits. The raw, un-split value is always preserved under `raw`
+   * regardless of this option.
+   */
+  listDelimiter?: string;
+}
+
 // ---- Shared primitives ----
 
 export type UnknownParams = Record<string, string>;

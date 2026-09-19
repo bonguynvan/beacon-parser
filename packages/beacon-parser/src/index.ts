@@ -4,6 +4,7 @@ export { detectHitType } from "./detect.js";
 export type {
   HitInput,
   HitType,
+  ParseHitOptions,
   ParsedHit,
   AppMeasurementHit,
   WebSdkHit,

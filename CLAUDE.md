@@ -106,10 +106,12 @@ experienceleague.adobe.com over memory.
   when `pev2` is absent). Source: https://experienceleague.adobe.com/en/docs/analytics/components/dimensions/custom-link
 - `list1-3` values are `,`-joined by AppMeasurement's default plugin
   behavior, **but the delimiter is configurable per report suite** (comma,
-  pipe, colon, etc. are all valid admin-side choices) — our parser assumes
-  comma. Treat any `lists` output as a best-effort default, not a
-  guarantee; flag this explicitly if a fixture ever shows a different
-  delimiter. Source: https://experienceleague.adobe.com/en/docs/analytics/implementation/vars/page-vars/list
+  pipe, colon, etc. are all valid admin-side choices). `parseHit()` defaults
+  to comma but takes an optional second `ParseHitOptions` argument —
+  `{ listDelimiter: "|" }` — for callers who know their report suite uses
+  something else (fixed 2026-09). `raw["listN"]` always keeps the un-split
+  original regardless of the delimiter used.
+  Source: https://experienceleague.adobe.com/en/docs/analytics/implementation/vars/page-vars/list
 - Long hits may switch to POST. First-party CNAME domains change the host, so
   detect by path/payload shape, not by hostname.
 

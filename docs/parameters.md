@@ -53,14 +53,21 @@ They are not documented as combinable on the same event; if a token contains
 both `:` and `=`, whichever comes first is treated as the delimiter and the
 rest of the token (including the other character) becomes that field's value.
 
-## `list1`–`list3` delimiter caveat
+## `list1`–`list3` delimiter option
 
 The delimiter between values in a list variable is **configured per report
 suite** (comma is the common default, but pipe/colon/etc. are equally valid
 admin-side choices) — see [list variables](https://experienceleague.adobe.com/en/docs/analytics/implementation/vars/page-vars/list).
-This parser always splits on comma. For a report suite configured with a
-different delimiter, `lists["N"]` will contain one un-split string instead of
-multiple values — the raw value is still preserved under `raw`.
+This parser splits on comma by default; pass `{ listDelimiter: "|" }` (or
+whatever your report suite uses) as the second argument to `parseHit()` when
+you know it's configured differently:
+
+```ts
+parseHit(input, { listDelimiter: "|" });
+```
+
+`raw["list1"]` always holds the original un-split string regardless of which
+delimiter (if any) was used to populate `lists["1"]`.
 
 ## Context data nesting
 

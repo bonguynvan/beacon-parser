@@ -1,8 +1,16 @@
 import { describe, expect, it } from "vitest";
-import { parseHit, type AppMeasurementHit } from "../src/index.js";
+import { parseHit, type AppMeasurementHit, type ParseHitOptions } from "../src/index.js";
 
 function parseAM(url: string, body?: string): AppMeasurementHit {
   const result = parseHit(body ? { url, method: "POST", body } : { url });
+  if (result.kind !== "appmeasurement") {
+    throw new Error(`Expected appmeasurement, got ${result.kind}`);
+  }
+  return result;
+}
+
+function parseAMWithOptions(url: string, options: ParseHitOptions): AppMeasurementHit {
+  const result = parseHit({ url }, options);
   if (result.kind !== "appmeasurement") {
     throw new Error(`Expected appmeasurement, got ${result.kind}`);
   }
@@ -79,6 +87,34 @@ describe("AppMeasurement parsing", () => {
     it("treats a bare event with neither : nor = as id-only", () => {
       const hit = parseAM("https://example.com/b/ss/rsid/1/code?events=purchase");
       expect(hit.events).toEqual([{ id: "purchase" }]);
+    });
+  });
+
+  describe("list1-3 delimiter option", () => {
+    it("defaults to splitting on comma when no option is given", () => {
+      const hit = parseAM("https://example.com/b/ss/rsid/1/code?list1=a,b,c");
+      expect(hit.lists["1"]).toEqual(["a", "b", "c"]);
+    });
+
+    it("splits on a custom delimiter when listDelimiter is provided", () => {
+      const hit = parseAMWithOptions("https://example.com/b/ss/rsid/1/code?list1=a%7Cb%7Cc", {
+        listDelimiter: "|"
+      });
+      expect(hit.lists["1"]).toEqual(["a", "b", "c"]);
+    });
+
+    it("does not split on comma when a custom delimiter is configured", () => {
+      const hit = parseAMWithOptions("https://example.com/b/ss/rsid/1/code?list1=a,b%7Cc", {
+        listDelimiter: "|"
+      });
+      expect(hit.lists["1"]).toEqual(["a,b", "c"]);
+    });
+
+    it("preserves the raw un-split value regardless of the delimiter option", () => {
+      const hit = parseAMWithOptions("https://example.com/b/ss/rsid/1/code?list1=a%7Cb%7Cc", {
+        listDelimiter: "|"
+      });
+      expect(hit.raw["list1"]).toBe("a|b|c");
     });
   });
 });

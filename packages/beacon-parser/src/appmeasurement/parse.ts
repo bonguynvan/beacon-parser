@@ -1,4 +1,4 @@
-import type { AppMeasurementHit, HitInput } from "../types.js";
+import type { AppMeasurementHit, HitInput, ParseHitOptions } from "../types.js";
 import { parseAppMeasurementUrl } from "./url.js";
 import { parseEvents } from "./events.js";
 import { parseProducts } from "./products.js";
@@ -18,7 +18,11 @@ const LINK_TRACKING_RE = /^lnk_(o|d|e)$/;
  * Never throws: malformed query strings or bodies degrade to empty/absent
  * fields rather than raising.
  */
-export function parseAppMeasurementHit(input: HitInput): AppMeasurementHit {
+export function parseAppMeasurementHit(
+  input: HitInput,
+  options?: ParseHitOptions
+): AppMeasurementHit {
+  const listDelimiter = options?.listDelimiter ?? ",";
   const urlInfo = parseAppMeasurementUrl(input.url);
   const bodyParams = parseFormBody(input.body);
 
@@ -60,7 +64,7 @@ export function parseAppMeasurementHit(input: HitInput): AppMeasurementHit {
     const list = listIndex(key);
     if (list) {
       lists[list] = value
-        .split(",")
+        .split(listDelimiter)
         .map((v) => v.trim())
         .filter((v) => v.length > 0);
       continue;
