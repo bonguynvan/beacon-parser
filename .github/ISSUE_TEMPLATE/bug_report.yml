@@ -1,0 +1,51 @@
+name: Bug report
+description: Report incorrect or missing parsing behavior
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug.
+
+        **Privacy notice:** any hit you attach MUST be anonymized first —
+        no real ECID/`mid`, user IDs, IPs, emails, or sensitive URLs.
+        Replace real report suite IDs, org IDs, and datastream IDs with
+        fake values. Do not attach raw HAR files.
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: A clear description of the incorrect or missing behavior.
+    validations:
+      required: true
+  - type: textarea
+    id: hit
+    attributes:
+      label: Anonymized hit
+      description: >
+        Paste the anonymized request (URL + method + body if POST) that
+        reproduces the issue. Confirm all identifiers have been scrubbed.
+      render: json
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected output
+      description: What you expected `parseHit()` to return.
+    validations:
+      required: false
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual output
+      description: What `parseHit()` actually returned.
+    validations:
+      required: false
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      options:
+        - label: I confirm the attached hit is fully anonymized (no real ECID/mid, user IDs, IPs, emails, or sensitive URLs).
+          required: true

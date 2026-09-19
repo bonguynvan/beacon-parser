@@ -1,0 +1,4 @@
+{
+  "url": "https://metrics.example.com/b/ss/examplecompanyprod/1/H29-2b3c4d5e6f7a?pageName=product-detail&events=event1&c.pageType=product&c.category.top=widgets&c.category.sub=gadgets&c.myco.orderId=ORDER-FAKE-0002",
+  "method": "GET"
+}

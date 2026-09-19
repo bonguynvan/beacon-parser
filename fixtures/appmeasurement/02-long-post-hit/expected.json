@@ -1,0 +1,32 @@
+{
+  "kind": "appmeasurement",
+  "reportSuiteId": "examplecompanyprod",
+  "version": "1",
+  "requestType": "ss",
+  "linkTrackingType": null,
+  "pageName": "product-listing",
+  "pageURL": "https://www.example.com/shop/widgets",
+  "referrer": "https://www.example.com/home",
+  "visitorId": "11111111111111111111111111111111",
+  "events": [{ "id": "event3" }, { "id": "event7" }],
+  "props": { "5": "fake-prop-5", "20": "fake-prop-20" },
+  "eVars": { "2": "fake-evar-2", "10": "fake-evar-10" },
+  "hierarchies": { "1": "Category/Subcategory" },
+  "lists": { "1": ["itemA", "itemB", "itemC"] },
+  "products": [],
+  "contextData": {},
+  "raw": {
+    "pageName": "product-listing",
+    "g": "https://www.example.com/shop/widgets",
+    "r": "https://www.example.com/home",
+    "v2": "fake-evar-2",
+    "v10": "fake-evar-10",
+    "c5": "fake-prop-5",
+    "c20": "fake-prop-20",
+    "h1": "Category/Subcategory",
+    "list1": "itemA,itemB,itemC",
+    "events": "event3,event7",
+    "mid": "11111111111111111111111111111111"
+  },
+  "unknown": {}
+}

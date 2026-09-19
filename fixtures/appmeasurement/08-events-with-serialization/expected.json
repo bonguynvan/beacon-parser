@@ -1,0 +1,25 @@
+{
+  "kind": "appmeasurement",
+  "reportSuiteId": "examplecompanyprod",
+  "version": "1",
+  "requestType": "ss",
+  "linkTrackingType": null,
+  "pageName": "order-confirmation",
+  "events": [
+    { "id": "event1" },
+    { "id": "event2", "value": 19.99 },
+    { "id": "event3", "value": 2 },
+    { "id": "purchase" }
+  ],
+  "props": {},
+  "eVars": {},
+  "hierarchies": {},
+  "lists": {},
+  "products": [],
+  "contextData": {},
+  "raw": {
+    "pageName": "order-confirmation",
+    "events": "event1,event2=19.99,event3=2,purchase"
+  },
+  "unknown": {}
+}

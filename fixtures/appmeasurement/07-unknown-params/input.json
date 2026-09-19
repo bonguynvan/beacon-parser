@@ -1,0 +1,4 @@
+{
+  "url": "https://metrics.example.com/b/ss/examplecompanyprod/1/H29-6f7a8b9c0d1e?pageName=misc&events=event1&AQB=1&ndh=1&pf=1&AQE=1&t=00%2F00%2F0000%2000%3A00%3A00%200%20360&c76=should-be-unknown&v251=should-be-unknown&customParam=fakeValue",
+  "method": "GET"
+}

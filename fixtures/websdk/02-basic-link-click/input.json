@@ -1,0 +1,31 @@
+{
+  "url": "https://edge.adobedc.net/ee/v1/interact?configId=fake-datastream-id-1111&requestId=req-0002",
+  "method": "POST",
+  "bodyJson": {
+    "events": [
+      {
+        "xdm": {
+          "eventType": "web.webinteraction.linkClicks",
+          "timestamp": "2024-01-01T00:05:00.000Z",
+          "web": {
+            "webInteraction": {
+              "name": "download-brochure",
+              "type": "download",
+              "linkClicks": { "value": 1 }
+            }
+          }
+        },
+        "data": {
+          "__adobe": {
+            "analytics": {
+              "pageName": "product-detail",
+              "events": ["event2"],
+              "linkName": "download-brochure",
+              "linkType": "d"
+            }
+          }
+        }
+      }
+    ]
+  }
+}

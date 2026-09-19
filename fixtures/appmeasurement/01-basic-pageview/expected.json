@@ -1,0 +1,28 @@
+{
+  "kind": "appmeasurement",
+  "reportSuiteId": "examplecompanyprod",
+  "version": "1",
+  "requestType": "ss",
+  "linkTrackingType": null,
+  "pageName": "homepage",
+  "pageURL": "https://www.example.com/home",
+  "referrer": "https://www.google.com/",
+  "visitorId": "00000000000000000000000000000000",
+  "events": [{ "id": "event1" }],
+  "props": { "1": "fake-prop-1" },
+  "eVars": { "1": "fake-evar-1" },
+  "hierarchies": {},
+  "lists": {},
+  "products": [],
+  "contextData": {},
+  "raw": {
+    "pageName": "homepage",
+    "g": "https://www.example.com/home",
+    "r": "https://www.google.com/",
+    "v1": "fake-evar-1",
+    "c1": "fake-prop-1",
+    "events": "event1",
+    "mid": "00000000000000000000000000000000"
+  },
+  "unknown": {}
+}

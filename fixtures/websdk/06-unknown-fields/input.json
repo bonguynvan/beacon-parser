@@ -1,0 +1,17 @@
+{
+  "url": "https://edge.adobedc.net/ee/v1/interact?requestId=req-0006&debug=true&ver=2.1.0",
+  "method": "POST",
+  "bodyJson": {
+    "customThing": true,
+    "events": [
+      {
+        "xdm": {
+          "eventType": "web.webpagedetails.pageViews",
+          "timestamp": "2024-01-01T00:25:00.000Z"
+        }
+      },
+      null,
+      "not-an-event-object"
+    ]
+  }
+}

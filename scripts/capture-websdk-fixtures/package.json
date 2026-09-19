@@ -1,0 +1,17 @@
+{
+  "name": "capture-websdk-fixtures",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Dev-only tool: captures real @adobe/alloy Web SDK request payloads via Playwright for use as anonymized fixtures. Not published.",
+  "type": "module",
+  "scripts": {
+    "capture": "tsx capture.ts"
+  },
+  "devDependencies": {
+    "@adobe/alloy": "^2.24.0",
+    "@playwright/test": "^1.48.2",
+    "@types/node": "^22.9.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.3"
+  }
+}

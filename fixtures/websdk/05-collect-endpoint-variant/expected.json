@@ -1,0 +1,60 @@
+{
+  "kind": "websdk",
+  "endpoint": "collect",
+  "datastreamId": "fake-datastream-id-2222",
+  "events": [
+    {
+      "xdm": {
+        "eventType": "web.webpagedetails.pageViews",
+        "timestamp": "2024-01-01T00:20:00.000Z",
+        "web": { "webPageDetails": { "pageViews": { "value": 1 }, "name": "landing" } }
+      }
+    },
+    {
+      "xdm": {
+        "eventType": "web.formFilledOut",
+        "timestamp": "2024-01-01T00:20:05.000Z",
+        "web": { "formDetails": { "name": "newsletter-signup" } }
+      },
+      "data": {
+        "__adobe": {
+          "analytics": {
+            "pageName": "landing",
+            "events": ["event5"]
+          }
+        }
+      },
+      "analytics": {
+        "pageName": "landing",
+        "events": ["event5"]
+      }
+    }
+  ],
+  "raw": {
+    "events": [
+      {
+        "xdm": {
+          "eventType": "web.webpagedetails.pageViews",
+          "timestamp": "2024-01-01T00:20:00.000Z",
+          "web": { "webPageDetails": { "pageViews": { "value": 1 }, "name": "landing" } }
+        }
+      },
+      {
+        "xdm": {
+          "eventType": "web.formFilledOut",
+          "timestamp": "2024-01-01T00:20:05.000Z",
+          "web": { "formDetails": { "name": "newsletter-signup" } }
+        },
+        "data": {
+          "__adobe": {
+            "analytics": {
+              "pageName": "landing",
+              "events": ["event5"]
+            }
+          }
+        }
+      }
+    ]
+  },
+  "unknown": {}
+}

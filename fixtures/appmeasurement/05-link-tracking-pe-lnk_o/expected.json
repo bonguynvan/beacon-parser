@@ -1,0 +1,27 @@
+{
+  "kind": "appmeasurement",
+  "reportSuiteId": "examplecompanyprod",
+  "version": "1",
+  "requestType": "ss",
+  "linkTrackingType": "o",
+  "pageName": "product-detail",
+  "visitorId": "22222222222222222222222222222222",
+  "linkURL": "https://www.example.com/download",
+  "linkName": "download-brochure",
+  "events": [{ "id": "event2" }],
+  "props": {},
+  "eVars": {},
+  "hierarchies": {},
+  "lists": {},
+  "products": [],
+  "contextData": {},
+  "raw": {
+    "pageName": "product-detail",
+    "pe": "lnk_o",
+    "pev1": "https://www.example.com/download",
+    "pev2": "download-brochure",
+    "events": "event2",
+    "mid": "22222222222222222222222222222222"
+  },
+  "unknown": {}
+}

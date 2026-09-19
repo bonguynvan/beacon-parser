@@ -1,0 +1,30 @@
+{
+  "url": "https://fake-firstparty.example.com/ee/v1/collect?configId=fake-datastream-id-2222",
+  "method": "POST",
+  "bodyJson": {
+    "events": [
+      {
+        "xdm": {
+          "eventType": "web.webpagedetails.pageViews",
+          "timestamp": "2024-01-01T00:20:00.000Z",
+          "web": { "webPageDetails": { "pageViews": { "value": 1 }, "name": "landing" } }
+        }
+      },
+      {
+        "xdm": {
+          "eventType": "web.formFilledOut",
+          "timestamp": "2024-01-01T00:20:05.000Z",
+          "web": { "formDetails": { "name": "newsletter-signup" } }
+        },
+        "data": {
+          "__adobe": {
+            "analytics": {
+              "pageName": "landing",
+              "events": ["event5"]
+            }
+          }
+        }
+      }
+    ]
+  }
+}

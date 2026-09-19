@@ -1,0 +1,94 @@
+{
+  "kind": "websdk",
+  "endpoint": "interact",
+  "datastreamId": "fake-datastream-id-1111",
+  "events": [
+    {
+      "xdm": {
+        "eventType": "commerce.purchases",
+        "timestamp": "2024-01-01T00:15:00.000Z",
+        "commerce": {
+          "purchases": { "value": 1 },
+          "order": { "purchaseID": "ORDER-FAKE-0001", "priceTotal": 129.99 }
+        },
+        "productListItems": [
+          {
+            "SKU": "SKU-FAKE-001",
+            "name": "Fake Product One",
+            "quantity": 2,
+            "priceTotal": 79.98
+          },
+          {
+            "SKU": "SKU-FAKE-002",
+            "name": "Fake Product Two",
+            "quantity": 1,
+            "priceTotal": 50.01
+          }
+        ]
+      },
+      "data": {
+        "__adobe": {
+          "analytics": {
+            "pageName": "order-confirmation",
+            "events": ["purchase", "event10"],
+            "contextData": {
+              "a.product.category": "widgets",
+              "myco.orderId": "ORDER-FAKE-0001"
+            }
+          }
+        }
+      },
+      "analytics": {
+        "pageName": "order-confirmation",
+        "events": ["purchase", "event10"],
+        "contextData": {
+          "a.product.category": "widgets",
+          "myco.orderId": "ORDER-FAKE-0001"
+        }
+      }
+    }
+  ],
+  "raw": {
+    "events": [
+      {
+        "xdm": {
+          "eventType": "commerce.purchases",
+          "timestamp": "2024-01-01T00:15:00.000Z",
+          "commerce": {
+            "purchases": { "value": 1 },
+            "order": { "purchaseID": "ORDER-FAKE-0001", "priceTotal": 129.99 }
+          },
+          "productListItems": [
+            {
+              "SKU": "SKU-FAKE-001",
+              "name": "Fake Product One",
+              "quantity": 2,
+              "priceTotal": 79.98
+            },
+            {
+              "SKU": "SKU-FAKE-002",
+              "name": "Fake Product Two",
+              "quantity": 1,
+              "priceTotal": 50.01
+            }
+          ]
+        },
+        "data": {
+          "__adobe": {
+            "analytics": {
+              "pageName": "order-confirmation",
+              "events": ["purchase", "event10"],
+              "contextData": {
+                "a.product.category": "widgets",
+                "myco.orderId": "ORDER-FAKE-0001"
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  "unknown": {
+    "requestId": "req-0004"
+  }
+}

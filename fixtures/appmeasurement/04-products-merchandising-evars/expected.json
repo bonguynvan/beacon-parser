@@ -1,0 +1,38 @@
+{
+  "kind": "appmeasurement",
+  "reportSuiteId": "examplecompanyprod",
+  "version": "1",
+  "requestType": "ss",
+  "linkTrackingType": null,
+  "pageName": "cart",
+  "events": [{ "id": "scAdd" }],
+  "props": {},
+  "eVars": {},
+  "hierarchies": {},
+  "lists": {},
+  "products": [
+    {
+      "category": "Widgets",
+      "name": "Fake Widget A",
+      "quantity": 2,
+      "price": 39.99,
+      "events": [{ "id": "event1" }, { "id": "event2", "value": 1 }],
+      "eVars": { "5": "fake-merch-5" }
+    },
+    {
+      "category": "Gadgets",
+      "name": "Fake Gadget B",
+      "quantity": 1,
+      "price": 19.99,
+      "events": [{ "id": "event1" }],
+      "eVars": { "5": "fake-merch-5b", "10": "fake-merch-10" }
+    }
+  ],
+  "contextData": {},
+  "raw": {
+    "pageName": "cart",
+    "events": "scAdd",
+    "products": "Widgets;Fake Widget A;2;39.99;event1|event2=1;evar5=fake-merch-5,Gadgets;Fake Gadget B;1;19.99;event1;evar5=fake-merch-5b|evar10=fake-merch-10"
+  },
+  "unknown": {}
+}

@@ -1,0 +1,29 @@
+{
+  "url": "https://edge.adobedc.net/ee/v1/interact?configId=fake-datastream-id-1111&requestId=req-0001",
+  "method": "POST",
+  "bodyJson": {
+    "events": [
+      {
+        "xdm": {
+          "eventType": "web.webpagedetails.pageViews",
+          "timestamp": "2024-01-01T00:00:00.000Z",
+          "web": {
+            "webPageDetails": {
+              "pageViews": { "value": 1 },
+              "name": "homepage"
+            }
+          }
+        },
+        "data": {
+          "__adobe": {
+            "analytics": {
+              "pageName": "homepage",
+              "events": ["event1"],
+              "contextData": { "a.pageType": "home" }
+            }
+          }
+        }
+      }
+    ]
+  }
+}

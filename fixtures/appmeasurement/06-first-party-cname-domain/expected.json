@@ -1,0 +1,24 @@
+{
+  "kind": "appmeasurement",
+  "reportSuiteId": "examplecompanyprod",
+  "version": "1",
+  "requestType": "ss",
+  "linkTrackingType": null,
+  "pageName": "about-us",
+  "pageURL": "https://www.examplebrand.com/about",
+  "visitorId": "33333333333333333333333333333333",
+  "events": [{ "id": "event1" }],
+  "props": {},
+  "eVars": {},
+  "hierarchies": {},
+  "lists": {},
+  "products": [],
+  "contextData": {},
+  "raw": {
+    "pageName": "about-us",
+    "g": "https://www.examplebrand.com/about",
+    "events": "event1",
+    "mid": "33333333333333333333333333333333"
+  },
+  "unknown": {}
+}

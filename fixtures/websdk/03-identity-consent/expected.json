@@ -1,0 +1,64 @@
+{
+  "kind": "websdk",
+  "endpoint": "interact",
+  "datastreamId": "fake-datastream-id-1111",
+  "orgId": "FAKE1234567890ABCDEF@AdobeOrg",
+  "events": [
+    {
+      "xdm": {
+        "eventType": "consent.request",
+        "timestamp": "2024-01-01T00:10:00.000Z",
+        "identityMap": {
+          "ECID": [{ "id": "00000000000000000000000000000000", "primary": true }]
+        },
+        "consent": [
+          {
+            "standard": "Adobe",
+            "version": "2.0",
+            "value": {
+              "collect": { "val": "y" }
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "query": {
+    "identity": { "fetch": ["ECID"] }
+  },
+  "meta": {
+    "state": { "domain": "example.com", "cookiesEnabled": true }
+  },
+  "raw": {
+    "orgId": "FAKE1234567890ABCDEF@AdobeOrg",
+    "events": [
+      {
+        "xdm": {
+          "eventType": "consent.request",
+          "timestamp": "2024-01-01T00:10:00.000Z",
+          "identityMap": {
+            "ECID": [{ "id": "00000000000000000000000000000000", "primary": true }]
+          },
+          "consent": [
+            {
+              "standard": "Adobe",
+              "version": "2.0",
+              "value": {
+                "collect": { "val": "y" }
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "query": {
+      "identity": { "fetch": ["ECID"] }
+    },
+    "meta": {
+      "state": { "domain": "example.com", "cookiesEnabled": true }
+    }
+  },
+  "unknown": {
+    "requestId": "req-0003"
+  }
+}

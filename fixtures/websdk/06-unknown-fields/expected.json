@@ -1,0 +1,30 @@
+{
+  "kind": "websdk",
+  "endpoint": "interact",
+  "events": [
+    {
+      "xdm": {
+        "eventType": "web.webpagedetails.pageViews",
+        "timestamp": "2024-01-01T00:25:00.000Z"
+      }
+    }
+  ],
+  "raw": {
+    "customThing": true,
+    "events": [
+      {
+        "xdm": {
+          "eventType": "web.webpagedetails.pageViews",
+          "timestamp": "2024-01-01T00:25:00.000Z"
+        }
+      },
+      null,
+      "not-an-event-object"
+    ]
+  },
+  "unknown": {
+    "requestId": "req-0006",
+    "debug": "true",
+    "ver": "2.1.0"
+  }
+}

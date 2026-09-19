@@ -1,0 +1,33 @@
+{
+  "kind": "appmeasurement",
+  "reportSuiteId": "examplecompanyprod",
+  "version": "1",
+  "requestType": "ss",
+  "linkTrackingType": null,
+  "pageName": "product-detail",
+  "events": [{ "id": "event1" }],
+  "props": {},
+  "eVars": {},
+  "hierarchies": {},
+  "lists": {},
+  "products": [],
+  "contextData": {
+    "pageType": "product",
+    "category": {
+      "top": "widgets",
+      "sub": "gadgets"
+    },
+    "myco": {
+      "orderId": "ORDER-FAKE-0002"
+    }
+  },
+  "raw": {
+    "pageName": "product-detail",
+    "events": "event1",
+    "c.pageType": "product",
+    "c.category.top": "widgets",
+    "c.category.sub": "gadgets",
+    "c.myco.orderId": "ORDER-FAKE-0002"
+  },
+  "unknown": {}
+}
