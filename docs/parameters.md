@@ -10,7 +10,7 @@ surfaced under `unknown` (never dropped, never guessed at).
 | `pageName` | Page name | `pageName` |
 | `g` | Current page URL | `pageURL` |
 | `r` | Referrer URL | `referrer` |
-| `events` | Comma-separated success events, e.g. `event1,event2=5`. `=` sets a numeric value; `:` attaches a serialization/dedup ID (e.g. `event3:abc123`) — **not yet parsed out separately, see note below** | `events` (`EventEntry[]`) |
+| `events` | Comma-separated success events, e.g. `event1,event2=5,event3:abc123`. `=` sets a numeric `value`; `:` attaches a `serializationId` (dedup id) | `events` (`EventEntry[]`) |
 | `products` | `;`-delimited product entries, `,`-separated list: `category;name;quantity;price;events;eVars` | `products` (`ProductEntry[]`) |
 | `pe` | Link tracking type: `lnk_o` (custom), `lnk_d` (download), `lnk_e` (exit) | `linkTrackingType` (`"o" \| "d" \| "e" \| null`) |
 | `pev1` | Link URL (only meaningful when `pe` is set) | `linkURL` |
@@ -44,13 +44,14 @@ category;name;quantity;price;events;eVars
 - `eVars` within a product entry is also pipe-separated, as `evarN=value` pairs
   (merchandising eVars), e.g. `evar5=blue|evar10=size-m`.
 
-## Known gap: event serialization IDs
+## Event serialization
 
-Adobe's `event3:abc123` colon syntax (a per-event dedup ID, distinct from the
-`=` numeric-value syntax) is not currently extracted into a separate field —
-the whole `event3:abc123` string is kept as the event's `id` verbatim. See
+`event3:abc123` (colon syntax) is a per-event serialization/dedup id,
+distinct from `event3=5` (numeric value) — see
 [event serialization](https://experienceleague.adobe.com/en/docs/analytics/implementation/vars/page-vars/events/event-serialization).
-Tracked as a follow-up; not silently dropped, just not split out yet.
+They are not documented as combinable on the same event; if a token contains
+both `:` and `=`, whichever comes first is treated as the delimiter and the
+rest of the token (including the other character) becomes that field's value.
 
 ## `list1`–`list3` delimiter caveat
 

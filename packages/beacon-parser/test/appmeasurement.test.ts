@@ -47,4 +47,38 @@ describe("AppMeasurement parsing", () => {
     expect(hit.linkURL).toBeUndefined();
     expect(hit.linkName).toBeUndefined();
   });
+
+  describe("event serialization (colon syntax)", () => {
+    it("extracts a serialization id from event3:abc123 as a separate field", () => {
+      const hit = parseAM("https://example.com/b/ss/rsid/1/code?events=event3:abc123");
+      expect(hit.events).toEqual([{ id: "event3", serializationId: "abc123" }]);
+    });
+
+    it("keeps = numeric values and : serialization ids independent per event", () => {
+      const hit = parseAM(
+        "https://example.com/b/ss/rsid/1/code?events=event1,event2:id-a,event3=5,event4:id-b"
+      );
+      expect(hit.events).toEqual([
+        { id: "event1" },
+        { id: "event2", serializationId: "id-a" },
+        { id: "event3", value: 5 },
+        { id: "event4", serializationId: "id-b" }
+      ]);
+    });
+
+    it("does not set value when only a serialization id is present", () => {
+      const hit = parseAM("https://example.com/b/ss/rsid/1/code?events=event1:abc");
+      expect(hit.events[0]?.value).toBeUndefined();
+    });
+
+    it("does not set serializationId when only a numeric value is present", () => {
+      const hit = parseAM("https://example.com/b/ss/rsid/1/code?events=event1=5");
+      expect(hit.events[0]?.serializationId).toBeUndefined();
+    });
+
+    it("treats a bare event with neither : nor = as id-only", () => {
+      const hit = parseAM("https://example.com/b/ss/rsid/1/code?events=purchase");
+      expect(hit.events).toEqual([{ id: "purchase" }]);
+    });
+  });
 });

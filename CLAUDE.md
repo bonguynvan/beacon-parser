@@ -87,11 +87,12 @@ experienceleague.adobe.com over memory.
   - `=` sets/increments a numeric event value, e.g. `event1=5`.
   - `:` attaches a serialization/dedup ID (alphanumeric, max 20 bytes),
     e.g. `event2:abc123`.
+  Both are parsed into separate `EventEntry.value` / `EventEntry.serializationId`
+  fields (fixed 2026-09, see `fixtures/appmeasurement/09-event-serialization-id`).
+  Not documented as combinable on one event; if both appear in one token,
+  whichever delimiter comes first wins and the rest of the token becomes
+  that field's raw value.
   Source: https://experienceleague.adobe.com/en/docs/analytics/implementation/vars/page-vars/events/event-serialization
-  **Known gap:** `src/appmeasurement/events.ts` currently only parses the `=`
-  form. The `:` serialization ID is dropped into the event id string
-  unparsed (not extracted as a separate field) — needs a fixture + fix
-  before this is fully spec-compliant.
 - `products` is a `,`-separated list of entries, each `;`-delimited as
   `category;product;quantity;price;events;eVars`. Within one entry, both
   `events` and `eVars` are `|`-pipe-delimited (comma is already the

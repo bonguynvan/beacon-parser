@@ -15,8 +15,10 @@ export type UnknownParams = Record<string, string>;
 export interface EventEntry {
   /** Event id/name as it appears on the wire, e.g. "event1", "purchase", "scOpen". */
   id: string;
-  /** Numeric value if serialized, e.g. event1=5.99 -> 5.99. */
+  /** Numeric value, e.g. event1=5.99 -> 5.99. */
   value?: number;
+  /** Serialization/dedup id, e.g. event3:abc123 -> "abc123". Mutually exclusive with `value`. */
+  serializationId?: string;
 }
 
 export interface ProductEntry {
