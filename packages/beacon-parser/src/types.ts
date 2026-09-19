@@ -10,14 +10,24 @@ export type HitType = "appmeasurement" | "websdk" | "unknown";
 
 export interface ParseHitOptions {
   /**
-   * Delimiter used to split list1-3 values into arrays. Defaults to ",".
-   * AppMeasurement's list variables use a delimiter configured per report
-   * suite (comma is the common default, but not guaranteed) — pass this
-   * when you know a report suite uses something else. Ignored for Web SDK
-   * hits. The raw, un-split value is always preserved under `raw`
-   * regardless of this option.
+   * Delimiter(s) used to split list1-3 values into arrays. Defaults to ",".
+   *
+   * AppMeasurement list variables are delimiter-configurable **per list, per
+   * report suite** — list1 and list2 on the same report suite can use
+   * different delimiters. Pass a single string to apply one delimiter to
+   * every list, or an object keyed by the same numeric suffix `lists` uses
+   * ("1" | "2" | "3", not "list1") to configure them independently:
+   *
+   * ```ts
+   * parseHit(input, { listDelimiter: "|" });                 // all lists use "|"
+   * parseHit(input, { listDelimiter: { "1": ",", "2": "|" } }); // per-list
+   * ```
+   *
+   * A list not present as a key in the object form falls back to ",".
+   * Ignored for Web SDK hits. The raw, un-split value is always preserved
+   * under `raw` regardless of this option.
    */
-  listDelimiter?: string;
+  listDelimiter?: string | Partial<Record<"1" | "2" | "3", string>>;
 }
 
 // ---- Shared primitives ----

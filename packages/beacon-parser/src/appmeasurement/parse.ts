@@ -22,7 +22,6 @@ export function parseAppMeasurementHit(
   input: HitInput,
   options?: ParseHitOptions
 ): AppMeasurementHit {
-  const listDelimiter = options?.listDelimiter ?? ",";
   const urlInfo = parseAppMeasurementUrl(input.url);
   const bodyParams = parseFormBody(input.body);
 
@@ -64,7 +63,7 @@ export function parseAppMeasurementHit(
     const list = listIndex(key);
     if (list) {
       lists[list] = value
-        .split(listDelimiter)
+        .split(resolveListDelimiter(options?.listDelimiter, list))
         .map((v) => v.trim())
         .filter((v) => v.length > 0);
       continue;
@@ -100,6 +99,21 @@ export function parseAppMeasurementHit(
   if (params["mid"]) hit.visitorId = params["mid"];
 
   return hit;
+}
+
+/**
+ * Resolves the delimiter to use for a given list's numeric suffix ("1"|"2"|"3"):
+ * a plain string applies to every list, an object form is looked up per-list
+ * (falling back to "," when that specific list isn't named), and no option
+ * at all also defaults to ",".
+ */
+function resolveListDelimiter(
+  listDelimiter: ParseHitOptions["listDelimiter"],
+  listKey: string
+): string {
+  if (listDelimiter === undefined) return ",";
+  if (typeof listDelimiter === "string") return listDelimiter;
+  return listDelimiter[listKey as "1" | "2" | "3"] ?? ",";
 }
 
 function parseFormBody(body: string | undefined): Record<string, string> {

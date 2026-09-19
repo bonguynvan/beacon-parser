@@ -129,5 +129,28 @@ describe("AppMeasurement parsing", () => {
       });
       expect(hit.raw["l1"]).toBe("a|b|c");
     });
+
+    it("supports per-list delimiters via the object form", () => {
+      const hit = parseAMWithOptions("https://example.com/b/ss/rsid/1/code?l1=a,b,c&l2=x%7Cy%7Cz", {
+        listDelimiter: { "1": ",", "2": "|" }
+      });
+      expect(hit.lists["1"]).toEqual(["a", "b", "c"]);
+      expect(hit.lists["2"]).toEqual(["x", "y", "z"]);
+    });
+
+    it("falls back to comma for a list not named in the object form", () => {
+      const hit = parseAMWithOptions("https://example.com/b/ss/rsid/1/code?l3=a,b,c", {
+        listDelimiter: { "1": "|" }
+      });
+      expect(hit.lists["3"]).toEqual(["a", "b", "c"]);
+    });
+
+    it("preserves raw per list even with independent per-list delimiters", () => {
+      const hit = parseAMWithOptions("https://example.com/b/ss/rsid/1/code?l1=a,b,c&l2=x%7Cy%7Cz", {
+        listDelimiter: { "1": ",", "2": "|" }
+      });
+      expect(hit.raw["l1"]).toBe("a,b,c");
+      expect(hit.raw["l2"]).toBe("x|y|z");
+    });
   });
 });

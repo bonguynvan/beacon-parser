@@ -61,18 +61,23 @@ JS variable name (`s.list1`) that produces it on the wire. See
 (exact row: `l1`-`l3` | `list1`-`list3` | "List variables.").
 
 The delimiter between values in a list variable is also **configured per
-report suite** (comma is the common default, but pipe/colon/etc. are equally
-valid admin-side choices) — see [list variables](https://experienceleague.adobe.com/en/docs/analytics/implementation/vars/page-vars/list).
-This parser splits on comma by default; pass `{ listDelimiter: "|" }` (or
-whatever your report suite uses) as the second argument to `parseHit()` when
-you know it's configured differently:
+report suite, per list** — `l1` and `l2` on the same report suite can use
+different delimiters (comma is the common default, but pipe/colon/etc. are
+equally valid admin-side choices) — see [list variables](https://experienceleague.adobe.com/en/docs/analytics/implementation/vars/page-vars/list).
+This parser splits every list on comma by default; pass a `listDelimiter`
+option as the second argument to `parseHit()` to override it — either one
+delimiter for every list, or an object keyed by the same numeric suffix
+`lists` uses ("1"/"2"/"3", not "l1"/"list1") for independent per-list
+delimiters:
 
 ```ts
-parseHit(input, { listDelimiter: "|" });
+parseHit(input, { listDelimiter: "|" });                    // every list uses "|"
+parseHit(input, { listDelimiter: { "1": ",", "2": "|" } });  // per-list
 ```
 
-`raw["l1"]` always holds the original un-split string regardless of which
-delimiter (if any) was used to populate `lists["1"]`.
+A list not named in the object form falls back to `,`. `raw["l1"]` always
+holds the original un-split string regardless of which delimiter (if any)
+was used to populate `lists["1"]`.
 
 ## Context data nesting
 

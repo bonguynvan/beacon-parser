@@ -124,12 +124,20 @@ experienceleague.adobe.com over memory.
   (exact row: `l1`-`l3` | `list1`-`list3` | "List variables."), corroborated by
   https://experienceleague.adobe.com/en/docs/analytics/implementation/vars/page-vars/list
 - List values are `,`-joined by AppMeasurement's default plugin behavior,
-  **but the delimiter is configurable per report suite** (comma, pipe,
-  colon, etc. are all valid admin-side choices). `parseHit()` defaults to
-  comma but takes an optional second `ParseHitOptions` argument —
-  `{ listDelimiter: "|" }` — for callers who know their report suite uses
-  something else (fixed 2026-09). `raw["lN"]` always keeps the un-split
-  original regardless of the delimiter used.
+  **but the delimiter is configurable per report suite, per list** — `l1`
+  and `l2` on the same report suite can use different delimiters. Comma,
+  pipe, colon, etc. are all valid admin-side choices. `parseHit()` defaults
+  every list to comma but takes an optional second `ParseHitOptions`
+  argument, `listDelimiter`, accepting either a single string (applies to
+  every list) or an object keyed by numeric suffix for independent per-list
+  delimiters:
+  ```ts
+  parseHit(input, { listDelimiter: "|" });
+  parseHit(input, { listDelimiter: { "1": ",", "2": "|" } });
+  ```
+  A list not named in the object form falls back to `,` (fixed 2026-09).
+  `raw["lN"]` always keeps the un-split original regardless of the
+  delimiter used.
   Source: https://experienceleague.adobe.com/en/docs/analytics/implementation/vars/page-vars/list
 - Long hits may switch to POST. First-party CNAME domains change the host, so
   detect by path/payload shape, not by hostname.
