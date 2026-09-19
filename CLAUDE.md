@@ -1,16 +1,32 @@
 # CLAUDE.md
 
 ## Project
-Open-source TypeScript toolkit for Adobe Analytics tag QA.
-**Phase 1 scope: `@bonguynvan/beacon-parser` only** — a zero-dependency parser that
-decodes Adobe Analytics network hits into clean, normalized JSON.
+**Read PLAN.md first — it explains why this repo exists and is the source of
+truth for phases, goals, and non-goals.** This section is a summary, not a
+replacement for it.
 
-Supported hit generations:
+Programmatic Adobe Analytics tag QA toolkit, runnable in CI ("Omnibug is for
+looking, this is for testing"). `@bonguynvan/beacon-parser` (this package) is
+only the foundation, not the product — a Playwright test layer, tracking-plan
+validation, a CLI, and a codemod are later, gated phases (PLAN.md §5–6).
+
+**Before starting any task, state which phase in PLAN.md it belongs to.** If
+it belongs to a gated phase (Phase 3+) or a PLAN.md §4 non-goal, ask before
+building instead of proceeding.
+
+Status as of this file's last edit: Phase 1 (parser) is code-complete —
+published on GitHub, playground built, not yet `npm publish`ed. Phase 1.5
+(launch: blog post, positioning vs Omnibug) has not started. Phase 2
+(Playwright test layer) has not started; do not begin it without confirming
+Phase 1.5's exit criteria and checking for user signal first, per PLAN.md §6.
+
+Supported hit generations (parser, Phase 1):
 1. AppMeasurement image requests (`/b/ss/{rsid}/{version}/{code}`, incl. POST bodies)
 2. Web SDK / Alloy (`*/ee/*/interact` or `/collect`, `events[].xdm`, `data.__adobe.analytics`)
 
-Out of scope until explicitly requested: CLI, Playwright assertions,
-tracking-plan-as-code, AppMeasurement -> Web SDK codemod, any UI.
+Out of scope until PLAN.md says otherwise: CLI, Playwright assertions,
+tracking-plan-as-code, AppMeasurement -> Web SDK codemod, any human-facing
+debugger UI (PLAN.md §4 non-goal — Omnibug already covers that).
 
 ## Hard rules (never break)
 - `parseHit()` must NEVER throw on unknown, malformed, or random input.
@@ -147,6 +163,8 @@ experienceleague.adobe.com over memory.
   detect by path/payload shape, not by hostname.
 
 ## Process
+0. State which PLAN.md phase the task belongs to before starting. If it's a
+   gated phase (3+) or a PLAN.md §4 non-goal, ask before building.
 1. Propose structure and types first; wait for approval before writing code.
 2. Implement Web SDK parsing first, then AppMeasurement.
 3. Ask before adding any dependency or expanding scope.
