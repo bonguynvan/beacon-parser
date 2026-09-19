@@ -10,9 +10,9 @@ surfaced under `unknown` (never dropped, never guessed at).
 | `pageName` | Page name | `pageName` |
 | `g` | Current page URL | `pageURL` |
 | `r` | Referrer URL | `referrer` |
-| `events` | Comma-separated success events, e.g. `event1,event2=5` | `events` (`EventEntry[]`) |
+| `events` | Comma-separated success events, e.g. `event1,event2=5`. `=` sets a numeric value; `:` attaches a serialization/dedup ID (e.g. `event3:abc123`) — **not yet parsed out separately, see note below** | `events` (`EventEntry[]`) |
 | `products` | `;`-delimited product entries, `,`-separated list: `category;name;quantity;price;events;eVars` | `products` (`ProductEntry[]`) |
-| `pe` | Link tracking type: `lnk_o` (exit), `lnk_d` (download), `lnk_e` (custom) | `linkTrackingType` (`"o" \| "d" \| "e" \| null`) |
+| `pe` | Link tracking type: `lnk_o` (custom), `lnk_d` (download), `lnk_e` (exit) | `linkTrackingType` (`"o" \| "d" \| "e" \| null`) |
 | `pev1` | Link URL (only meaningful when `pe` is set) | `linkURL` |
 | `pev2` | Link name (only meaningful when `pe` is set) | `linkName` |
 | `mid` | Experience Cloud ID (visitor id) | `visitorId` |
@@ -43,6 +43,23 @@ category;name;quantity;price;events;eVars
   not comma-separated — commas are already used to delimit products.
 - `eVars` within a product entry is also pipe-separated, as `evarN=value` pairs
   (merchandising eVars), e.g. `evar5=blue|evar10=size-m`.
+
+## Known gap: event serialization IDs
+
+Adobe's `event3:abc123` colon syntax (a per-event dedup ID, distinct from the
+`=` numeric-value syntax) is not currently extracted into a separate field —
+the whole `event3:abc123` string is kept as the event's `id` verbatim. See
+[event serialization](https://experienceleague.adobe.com/en/docs/analytics/implementation/vars/page-vars/events/event-serialization).
+Tracked as a follow-up; not silently dropped, just not split out yet.
+
+## `list1`–`list3` delimiter caveat
+
+The delimiter between values in a list variable is **configured per report
+suite** (comma is the common default, but pipe/colon/etc. are equally valid
+admin-side choices) — see [list variables](https://experienceleague.adobe.com/en/docs/analytics/implementation/vars/page-vars/list).
+This parser always splits on comma. For a report suite configured with a
+different delimiter, `lists["N"]` will contain one un-split string instead of
+multiple values — the raw value is still preserved under `raw`.
 
 ## Context data nesting
 
