@@ -1,7 +1,7 @@
 # beacon-parser
 
 Open-source TypeScript toolkit for Adobe Analytics tag QA. **Phase 1** is a
-zero-dependency parser, [`@bonguynvan/beacon-parser`](packages/beacon-parser),
+zero-dependency parser, [`@bonv/beacon-parser`](packages/beacon-parser),
 that decodes Adobe Analytics network hits into clean, normalized JSON.
 
 Supports both hit generations:
@@ -17,8 +17,8 @@ published to npm ([source](site/)).
 ## Install
 
 ```bash
-pnpm add @bonguynvan/beacon-parser
-# or: npm install @bonguynvan/beacon-parser
+pnpm add @bonv/beacon-parser
+# or: npm install @bonv/beacon-parser
 ```
 
 ## Usage
@@ -26,7 +26,7 @@ pnpm add @bonguynvan/beacon-parser
 ### 1. Parse an AppMeasurement image request
 
 ```ts
-import { parseHit } from "@bonguynvan/beacon-parser";
+import { parseHit } from "@bonv/beacon-parser";
 
 const hit = parseHit({
   url: "https://metrics.example.com/b/ss/examplecompanyprod/1/H29-9f8e7d6c5b4a" +
@@ -44,7 +44,7 @@ if (hit.kind === "appmeasurement") {
 ### 2. Parse a Web SDK (Alloy) interact request
 
 ```ts
-import { parseHit } from "@bonguynvan/beacon-parser";
+import { parseHit } from "@bonv/beacon-parser";
 
 const hit = parseHit({
   url: "https://edge.adobedc.net/ee/v1/interact?configId=fake-datastream-id",
@@ -67,7 +67,7 @@ if (hit.kind === "websdk") {
 ### 3. Handle any captured hit without knowing its type up front
 
 ```ts
-import { parseHit } from "@bonguynvan/beacon-parser";
+import { parseHit } from "@bonv/beacon-parser";
 
 function summarize(url: string, method?: string, body?: string) {
   const hit = parseHit({ url, method: method as "GET" | "POST" | undefined, body });

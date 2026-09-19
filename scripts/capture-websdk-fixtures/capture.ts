@@ -1,5 +1,5 @@
 /**
- * Dev-only fixture capture tool. NOT part of the published @bonguynvan/beacon-parser
+ * Dev-only fixture capture tool. NOT part of the published @bonv/beacon-parser
  * package — run manually with `pnpm capture` when adding new Web SDK fixtures.
  *
  * Loads fixture-page.html (which configures @adobe/alloy with a fake orgId and

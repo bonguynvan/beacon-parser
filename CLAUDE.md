@@ -6,7 +6,7 @@ truth for phases, goals, and non-goals.** This section is a summary, not a
 replacement for it.
 
 Programmatic Adobe Analytics tag QA toolkit, runnable in CI ("Omnibug is for
-looking, this is for testing"). `@bonguynvan/beacon-parser` (this package) is
+looking, this is for testing"). `@bonv/beacon-parser` (this package) is
 only the foundation, not the product — a Playwright test layer, tracking-plan
 validation, a CLI, and a codemod are later, gated phases (PLAN.md §5–6).
 

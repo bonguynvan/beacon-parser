@@ -1,5 +1,5 @@
 ---
-"@bonguynvan/beacon-parser": patch
+"@bonv/beacon-parser": patch
 ---
 
 Fix several AppMeasurement parsing correctness issues found during review, verified against Adobe's canonical query-parameters reference:

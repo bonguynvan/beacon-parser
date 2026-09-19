@@ -1,6 +1,6 @@
 # capture-websdk-fixtures (dev-only)
 
-Not part of the published `@bonguynvan/beacon-parser` package. Captures real
+Not part of the published `@bonv/beacon-parser` package. Captures real
 `@adobe/alloy` Web SDK request payloads for use as test fixtures.
 
 Loads `fixture-page.html`, which configures Alloy with a **fake** `orgId` and

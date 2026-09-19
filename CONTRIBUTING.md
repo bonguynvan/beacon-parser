@@ -1,6 +1,6 @@
 # Contributing
 
-Thanks for considering a contribution to `@bonguynvan/beacon-parser`.
+Thanks for considering a contribution to `@bonv/beacon-parser`.
 
 ## Reporting bugs
 

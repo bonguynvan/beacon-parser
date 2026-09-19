@@ -1,5 +1,5 @@
 {
-  "name": "@bonguynvan/beacon-parser",
+  "name": "@bonv/beacon-parser",
   "version": "0.1.0",
   "description": "Zero-dependency parser that decodes Adobe Analytics network hits (AppMeasurement + Web SDK) into normalized JSON.",
   "license": "Apache-2.0",
