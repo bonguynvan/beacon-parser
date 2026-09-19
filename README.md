@@ -10,6 +10,10 @@ Supports both hit generations:
   `/b/ss/{rsid}/{version}/{code}`
 - **Web SDK (Alloy)** requests: `*/ee/*/interact` or `/collect`
 
+**[Try it live →](https://bonguynvan.github.io/beacon-parser/)** — paste a hit
+URL/body and see it decoded in your browser, using the exact package
+published to npm ([source](site/)).
+
 ## Install
 
 ```bash

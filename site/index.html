@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>beacon-parser playground</title>
+<meta name="description" content="Paste an Adobe Analytics AppMeasurement or Web SDK hit and see it decoded live, in your browser, using @bonguynvan/beacon-parser." />
+<style>
+  :root {
+    color-scheme: dark;
+    --bg: #0b0d10;
+    --bg-raised: #12151a;
+    --bg-inset: #0e1013;
+    --border: #22262d;
+    --text: #e6e8eb;
+    --text-dim: #8b93a1;
+    --text-faint: #5b6472;
+    --accent: #ffb454;
+    --accent-dim: #8a6a3a;
+    --am-color: #7cc6ff;
+    --sdk-color: #b39dff;
+    --unknown-color: #ff8a8a;
+    --mono: ui-monospace, "Cascadia Code", "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    line-height: 1.5;
+  }
+
+  .wrap {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 4rem;
+  }
+
+  header.top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .beacon-mark {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #ffe3b0, var(--accent) 55%, var(--accent-dim) 100%);
+    box-shadow: 0 0 22px 3px rgba(255, 180, 84, 0.45);
+    flex-shrink: 0;
+  }
+
+  h1 {
+    font-size: 1.15rem;
+    font-weight: 650;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+
+  h1 code {
+    font-family: var(--mono);
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .tagline {
+    margin: 0.15rem 0 0;
+    color: var(--text-dim);
+    font-size: 0.88rem;
+  }
+
+  nav.links {
+    display: flex;
+    gap: 1.1rem;
+    align-items: center;
+    font-size: 0.85rem;
+  }
+
+  nav.links a {
+    color: var(--text-dim);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    padding-bottom: 2px;
+    transition: color 120ms ease, border-color 120ms ease;
+  }
+
+  nav.links a:hover {
+    color: var(--accent);
+    border-color: var(--accent-dim);
+  }
+
+  .limits {
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.85rem 1.1rem;
+    font-size: 0.83rem;
+    color: var(--text-dim);
+    margin-bottom: 1.75rem;
+  }
+
+  .limits strong { color: var(--text); }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    align-items: start;
+  }
+
+  @media (max-width: 860px) {
+    .grid { grid-template-columns: 1fr; }
+  }
+
+  .panel {
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .panel-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.65rem 0.9rem;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg-inset);
+  }
+
+  .dots { display: flex; gap: 6px; }
+  .dots span {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: #3a3f47;
+  }
+
+  .panel-title {
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    font-family: var(--mono);
+    letter-spacing: 0.02em;
+  }
+
+  .panel-body { padding: 1rem; }
+
+  label {
+    display: block;
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    margin: 0.9rem 0 0.35rem;
+    font-family: var(--mono);
+  }
+
+  label:first-child { margin-top: 0; }
+
+  select, textarea, input[type="text"] {
+    width: 100%;
+    background: var(--bg-inset);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    padding: 0.6rem 0.7rem;
+    resize: vertical;
+    outline: none;
+    transition: border-color 120ms ease;
+  }
+
+  select:focus, textarea:focus, input[type="text"]:focus {
+    border-color: var(--accent-dim);
+  }
+
+  textarea#url { min-height: 3.4rem; }
+  textarea#body { min-height: 5.5rem; }
+
+  .row {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-end;
+  }
+
+  .row > div { flex: 1; }
+
+  .examples {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.9rem;
+  }
+
+  .examples button {
+    background: var(--bg-inset);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    font-size: 0.76rem;
+    font-family: var(--mono);
+    padding: 0.35rem 0.65rem;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: border-color 120ms ease, color 120ms ease;
+  }
+
+  .examples button:hover {
+    color: var(--accent);
+    border-color: var(--accent-dim);
+  }
+
+  .parse-btn {
+    margin-top: 1.1rem;
+    width: 100%;
+    background: linear-gradient(180deg, #ffc574, var(--accent));
+    color: #241704;
+    border: none;
+    border-radius: 8px;
+    padding: 0.7rem;
+    font-size: 0.88rem;
+    font-weight: 650;
+    cursor: pointer;
+    transition: filter 120ms ease, transform 80ms ease;
+  }
+
+  .parse-btn:hover { filter: brightness(1.06); }
+  .parse-btn:active { transform: translateY(1px); }
+
+  .kind-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--mono);
+    font-size: 0.76rem;
+    padding: 0.2rem 0.55rem;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+  }
+
+  .kind-badge .dot { width: 7px; height: 7px; border-radius: 50%; }
+
+  .kind-appmeasurement { color: var(--am-color); border-color: color-mix(in srgb, var(--am-color) 35%, var(--border)); }
+  .kind-appmeasurement .dot { background: var(--am-color); }
+  .kind-websdk { color: var(--sdk-color); border-color: color-mix(in srgb, var(--sdk-color) 35%, var(--border)); }
+  .kind-websdk .dot { background: var(--sdk-color); }
+  .kind-unknown { color: var(--unknown-color); border-color: color-mix(in srgb, var(--unknown-color) 35%, var(--border)); }
+  .kind-unknown .dot { background: var(--unknown-color); }
+
+  pre#output {
+    margin: 0;
+    padding: 1rem;
+    font-family: var(--mono);
+    font-size: 0.82rem;
+    line-height: 1.55;
+    overflow: auto;
+    max-height: 70vh;
+    white-space: pre;
+    color: var(--text);
+  }
+
+  pre#output .placeholder { color: var(--text-faint); font-style: italic; }
+
+  .jk { color: #7cc6ff; }
+  .js { color: #b7e28d; }
+  .jn { color: #ffb454; }
+  .jb { color: #ff9f7c; }
+  .jl { color: var(--text-faint); }
+
+  .empty-state {
+    padding: 2.5rem 1.5rem;
+    text-align: center;
+    color: var(--text-faint);
+    font-size: 0.85rem;
+  }
+
+  footer {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    color: var(--text-faint);
+    font-size: 0.8rem;
+  }
+
+  footer a { color: var(--text-dim); }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="top">
+      <div class="brand">
+        <div class="beacon-mark" aria-hidden="true"></div>
+        <div>
+          <h1><code>beacon-parser</code> playground</h1>
+          <p class="tagline">Decode an AppMeasurement or Web SDK hit, entirely in your browser.</p>
+        </div>
+      </div>
+      <nav class="links">
+        <a href="https://github.com/bonguynvan/beacon-parser" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://github.com/bonguynvan/beacon-parser/blob/main/docs/parameters.md" target="_blank" rel="noopener">Parameter docs</a>
+        <a href="https://www.npmjs.com/package/@bonguynvan/beacon-parser" target="_blank" rel="noopener">npm</a>
+      </nav>
+    </header>
+
+    <div class="limits">
+      <strong>Client-side only.</strong> This decodes what a browser sent — it does not verify what appears in Adobe reports, and nothing you paste here leaves your browser (there's no server; parsing runs locally via the same package published to npm).
+    </div>
+
+    <div class="grid">
+      <div class="panel">
+        <div class="panel-bar">
+          <div class="dots"><span></span><span></span><span></span></div>
+          <div class="panel-title">input</div>
+        </div>
+        <div class="panel-body">
+          <label for="url">url</label>
+          <textarea id="url" spellcheck="false"></textarea>
+
+          <div class="row">
+            <div>
+              <label for="method">method</label>
+              <select id="method">
+                <option value="GET">GET</option>
+                <option value="POST">POST</option>
+              </select>
+            </div>
+          </div>
+
+          <label for="body">body <span style="color:var(--text-faint)">(optional, used when method is POST)</span></label>
+          <textarea id="body" spellcheck="false" placeholder="form-encoded string for AppMeasurement, or a JSON string for Web SDK"></textarea>
+
+          <label style="margin-bottom:0.35rem;">examples</label>
+          <div class="examples" id="examples"></div>
+
+          <button class="parse-btn" id="parseBtn">Parse hit</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-bar">
+          <div class="dots"><span></span><span></span><span></span></div>
+          <div class="panel-title">output</div>
+          <div id="kindBadge" style="margin-left:auto;"></div>
+        </div>
+        <pre id="output"><span class="placeholder">Pick an example, or paste a hit and press "Parse hit".</span></pre>
+      </div>
+    </div>
+
+    <footer>
+      Parser source: <a href="https://github.com/bonguynvan/beacon-parser/tree/main/packages/beacon-parser" target="_blank" rel="noopener">packages/beacon-parser</a>.
+      Zero runtime dependencies, works identically in Node and the browser. Apache-2.0.
+    </footer>
+  </div>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
