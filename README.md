@@ -11,8 +11,25 @@ Supports both hit generations:
 - **Web SDK (Alloy)** requests: `*/ee/*/interact` or `/collect`
 
 **[Try it live →](https://bonguynvan.github.io/beacon-parser/)** — paste a hit
-URL/body and see it decoded in your browser, using the exact package
-published to npm ([source](site/)).
+URL/body and see it decoded in your browser, using the same built package
+this repo ships ([source](site/)).
+
+## beacon-parser vs Omnibug
+
+Different job, not a replacement. Both understand Adobe Analytics hits;
+they're built for different people at different points in the workflow.
+
+| | [Omnibug](https://github.com/MisterPhilip/omnibug) (and the Experience Platform Debugger, Assurance) | beacon-parser |
+|---|---|---|
+| Who it's for | A human looking at beacons live | Code that asserts on beacons |
+| Where it runs | Browser extension | Node, browser, or CI — anywhere JS runs |
+| Output | Annotated UI you read | Typed JSON you can `expect()` against |
+| Question it answers | "What did this hit just send?" | "Did this hit send what it's supposed to?" |
+| Runs in CI | No | Yes (that's the point) |
+
+Use Omnibug while you're building or debugging a tag. Use beacon-parser once
+you want "does this still work" to be a test that fails the build, not a
+question someone has to remember to ask by hand.
 
 ## Install
 
