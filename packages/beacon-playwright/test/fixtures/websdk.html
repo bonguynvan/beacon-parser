@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+<head><meta charset="utf-8" /><title>Web SDK fixture</title></head>
+<body>
+  <button id="buy">Buy</button>
+  <script>
+    // Fires a request shaped like a real Web SDK interact call. Not the
+    // real @adobe/alloy library -- the capture layer only needs to observe
+    // the wire shape, which is identical either way.
+    document.getElementById("buy").addEventListener("click", () => {
+      const url = "https://fake-edge.invalid/ee/v1/interact?configId=fake-datastream";
+      const body = JSON.stringify({
+        events: [
+          {
+            xdm: { eventType: "commerce.purchases" },
+            data: {
+              __adobe: {
+                analytics: { pageName: "checkout", events: ["event5"] }
+              }
+            }
+          }
+        ]
+      });
+      fetch(url, { method: "POST", mode: "no-cors", body }).catch(() => {});
+    });
+  </script>
+</body>
+</html>

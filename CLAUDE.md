@@ -6,9 +6,10 @@ truth for phases, goals, and non-goals.** This section is a summary, not a
 replacement for it.
 
 Programmatic Adobe Analytics tag QA toolkit, runnable in CI ("Omnibug is for
-looking, this is for testing"). `@bonv/beacon-parser` (this package) is
-only the foundation, not the product — a Playwright test layer, tracking-plan
-validation, a CLI, and a codemod are later, gated phases (PLAN.md §5–6).
+looking, this is for testing"). `@bonv/beacon-parser` is the foundation, not
+the product — `@bonv/beacon-playwright` is the first thing built on top of
+it; tracking-plan validation, a CLI, and a codemod are later, gated phases
+(PLAN.md §5–6).
 
 **Before starting any task, state which phase in PLAN.md it belongs to.** If
 it belongs to a gated phase (Phase 3+) or a PLAN.md §4 non-goal, ask before
@@ -16,17 +17,23 @@ building instead of proceeding.
 
 Status as of this file's last edit: Phase 1 (parser) is code-complete —
 published on GitHub, playground built, not yet `npm publish`ed. Phase 1.5
-(launch: blog post, positioning vs Omnibug) has not started. Phase 2
-(Playwright test layer) has not started; do not begin it without confirming
-Phase 1.5's exit criteria and checking for user signal first, per PLAN.md §6.
+(launch: blog post, positioning vs Omnibug) is partially done — README
+positioning shipped, blog/LinkedIn/community posts and npm publish
+explicitly deferred by the maintainer (not skipped, just not blocking).
+**Phase 2 (Playwright test layer) is in progress** — `capture.ts` +
+`matchers.ts` (the must-ship slice: `captureAdobeHits`, `toHaveAdobeHit`,
+`toHaveAdobeEvent`, `toHaveEvar`, `toHaveProp`) are built and tested
+end-to-end with real Chromium. `diffAdobeHits` (migration parity diff,
+PLAN.md §6 Phase 2 stretch goal) has not been started — its hit-matching
+strategy is an open design question, decide it explicitly, don't guess.
 
 Supported hit generations (parser, Phase 1):
 1. AppMeasurement image requests (`/b/ss/{rsid}/{version}/{code}`, incl. POST bodies)
 2. Web SDK / Alloy (`*/ee/*/interact` or `/collect`, `events[].xdm`, `data.__adobe.analytics`)
 
-Out of scope until PLAN.md says otherwise: CLI, Playwright assertions,
-tracking-plan-as-code, AppMeasurement -> Web SDK codemod, any human-facing
-debugger UI (PLAN.md §4 non-goal — Omnibug already covers that).
+Out of scope until PLAN.md says otherwise: CLI, tracking-plan-as-code,
+AppMeasurement -> Web SDK codemod, any human-facing debugger UI (PLAN.md §4
+non-goal — Omnibug already covers that).
 
 ## Hard rules (never break)
 - `parseHit()` must NEVER throw on unknown, malformed, or random input.
@@ -80,14 +87,16 @@ debugger UI (PLAN.md §4 non-goal — Omnibug already covers that).
 
 ## Commands
 - `pnpm install`
-- `pnpm build` (tsup: ESM + CJS + d.ts)
-- `pnpm test` (Vitest)
+- `pnpm exec playwright install chromium` (once, before running tests — beacon-playwright's own test suite needs a real browser)
+- `pnpm build` (tsup: ESM + CJS + d.ts, both packages)
+- `pnpm test` (Vitest for beacon-parser, `playwright test` for beacon-playwright)
 - `pnpm lint` / `pnpm typecheck`
 - Run lint, typecheck, and test after every change and fix failures before moving on.
 
 ## Structure
-- `packages/beacon-parser/` — the published package
-- `fixtures/` — anonymized sample hits (input + expected output JSON)
+- `packages/beacon-parser/` — the published parser package
+- `packages/beacon-playwright/` — the published Playwright capture/matchers package (Phase 2); depends on beacon-parser, treats `@playwright/test` as a peer dep only
+- `fixtures/` — anonymized sample hits for beacon-parser (input + expected output JSON)
 - `scripts/` — dev-only tooling (e.g. Playwright fixture capture). NOT published.
 - `docs/parameters.md` — AppMeasurement parameter lookup table
 
