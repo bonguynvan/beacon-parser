@@ -5,6 +5,9 @@ Open-source TypeScript toolkit for Adobe Analytics tag QA. See
 
 - [`@bonv/beacon-parser`](packages/beacon-parser) — zero-dependency parser
   that decodes Adobe Analytics network hits into clean, normalized JSON.
+  Also ships `diffAdobeHits()` for comparing two hit sets — useful when
+  migrating tags between vendors or generations (AppMeasurement -> Web SDK)
+  and checking what broke.
 - [`@bonv/beacon-playwright`](packages/beacon-playwright) — capture hits
   during a Playwright test and assert on them with matchers like
   `toHaveAdobeEvent`/`toHaveEvar`.

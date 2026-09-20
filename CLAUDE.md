@@ -16,16 +16,18 @@ it belongs to a gated phase (Phase 3+) or a PLAN.md §4 non-goal, ask before
 building instead of proceeding.
 
 Status as of this file's last edit: Phase 1 (parser) is code-complete —
-published on GitHub, playground built, not yet `npm publish`ed. Phase 1.5
+published on GitHub, playground built, npm publish in progress. Phase 1.5
 (launch: blog post, positioning vs Omnibug) is partially done — README
-positioning shipped, blog/LinkedIn/community posts and npm publish
-explicitly deferred by the maintainer (not skipped, just not blocking).
-**Phase 2 (Playwright test layer) is in progress** — `capture.ts` +
-`matchers.ts` (the must-ship slice: `captureAdobeHits`, `toHaveAdobeHit`,
+positioning shipped, blog/LinkedIn/community posts explicitly deferred by
+the maintainer (not skipped, just not blocking). **Phase 2 (Playwright test
+layer) is done, including the stretch goal** — `capture.ts` + `matchers.ts`
+in `@bonv/beacon-playwright` (`captureAdobeHits`, `toHaveAdobeHit`,
 `toHaveAdobeEvent`, `toHaveEvar`, `toHaveProp`) are built and tested
-end-to-end with real Chromium. `diffAdobeHits` (migration parity diff,
-PLAN.md §6 Phase 2 stretch goal) has not been started — its hit-matching
-strategy is an open design question, decide it explicitly, don't guess.
+end-to-end with real Chromium; `diffAdobeHits` (migration parity diff) is
+built in `@bonv/beacon-parser` instead of beacon-playwright (it's pure data
+comparison with zero Playwright dependency — see the diff.ts module
+comment for the pageName-then-position matching strategy that was decided
+before implementing).
 
 Supported hit generations (parser, Phase 1):
 1. AppMeasurement image requests (`/b/ss/{rsid}/{version}/{code}`, incl. POST bodies)

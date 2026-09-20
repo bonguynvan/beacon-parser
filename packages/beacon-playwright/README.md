@@ -67,6 +67,19 @@ const expect = baseExpect.extend(adobeMatchers);
 | `toHaveEvar(index, expected)` | At least one **AppMeasurement** hit has that eVar value |
 | `toHaveProp(index, expected)` | At least one **AppMeasurement** hit has that prop value |
 
+## Migration parity diffing
+
+Comparing two hit sets (e.g. before/after a vendor migration) isn't part of
+this package — `captureAdobeHits()` returns the same `AdobeHit[]` shape that
+[`@bonv/beacon-parser`'s `diffAdobeHits()`](../beacon-parser#diffing-two-hit-sets-migration-parity)
+takes, so the two compose directly:
+
+```ts
+const before = await captureAdobeHits(oldPage, flow);
+const after = await captureAdobeHits(newPage, flow);
+const diff = diffAdobeHits(before, after);
+```
+
 `toHaveEvar`/`toHaveProp` only ever match AppMeasurement hits. Web SDK
 doesn't carry numbered eVars/props on the wire — that mapping happens
 server-side, in the datastream configuration — so there's nothing on a

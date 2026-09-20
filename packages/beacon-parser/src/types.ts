@@ -139,3 +139,55 @@ export interface UnknownHit {
 // ---- Discriminated union ----
 
 export type ParsedHit = AppMeasurementHit | WebSdkHit | UnknownHit;
+
+/** A successfully-parsed hit of either generation (excludes "unknown"). */
+export type AdobeHit = AppMeasurementHit | WebSdkHit;
+
+// ---- Hit diffing (migration parity) ----
+
+export interface ChangedValue {
+  index: string;
+  before: string;
+  after: string;
+}
+
+export interface HitDiffEntry {
+  /** Absent when this entry only exists in `after` (an added hit). */
+  before?: AdobeHit;
+  /** Absent when this entry only exists in `before` (a missing hit). */
+  after?: AdobeHit;
+  /** The pageName this entry was grouped by, when either side had one. */
+  pageName?: string;
+  /** True when before/after are different hit generations (e.g. AppMeasurement -> Web SDK). */
+  kindChanged: boolean;
+  /** Event ids present in `before` but not `after`. */
+  missingEvents: string[];
+  /** Event ids present in `after` but not `before`. */
+  addedEvents: string[];
+  /**
+   * eVar value changes, only computed when both sides are AppMeasurement --
+   * Web SDK carries no numbered eVar on the wire (that mapping is
+   * server-side, in the datastream config), so a kind-changed pair never
+   * populates this.
+   */
+  changedEvars: ChangedValue[];
+  /** Prop value changes. Same AppMeasurement-only caveat as changedEvars. */
+  changedProps: ChangedValue[];
+}
+
+export interface HitDiffResult {
+  /** One entry per matched pair, added hit, or missing hit -- see HitDiffEntry. */
+  entries: HitDiffEntry[];
+  /** Flat roll-up of every entry's missingEvents, for simple assertions. */
+  missingEvents: string[];
+  /** Flat roll-up of every entry's addedEvents. */
+  addedEvents: string[];
+  /** Flat roll-up of every entry's changedEvars, with pageName attached. */
+  changedEvars: Array<ChangedValue & { pageName?: string }>;
+  /** Flat roll-up of every entry's changedProps, with pageName attached. */
+  changedProps: Array<ChangedValue & { pageName?: string }>;
+  /** Hits present in `before` with no corresponding hit in `after`. */
+  missingHits: AdobeHit[];
+  /** Hits present in `after` with no corresponding hit in `before`. */
+  addedHits: AdobeHit[];
+}

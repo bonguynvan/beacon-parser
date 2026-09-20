@@ -1,31 +1,11 @@
-import type { AppMeasurementHit, WebSdkHit } from "@bonv/beacon-parser";
+import { pageNameOf, eventIdsOf } from "@bonv/beacon-parser";
+import type { AdobeHit } from "@bonv/beacon-parser";
 
-type Hit = AppMeasurementHit | WebSdkHit;
+type Hit = AdobeHit;
 
 interface MatcherResult {
   pass: boolean;
   message: () => string;
-}
-
-function pageNameOf(hit: Hit): string | undefined {
-  if (hit.kind === "appmeasurement") return hit.pageName;
-  for (const event of hit.events) {
-    const pageName = event.analytics?.pageName;
-    if (typeof pageName === "string") return pageName;
-  }
-  return undefined;
-}
-
-function eventIdsOf(hit: Hit): string[] {
-  if (hit.kind === "appmeasurement") return hit.events.map((event) => event.id);
-
-  const ids: string[] = [];
-  for (const event of hit.events) {
-    if (Array.isArray(event.analytics?.events)) {
-      ids.push(...event.analytics.events);
-    }
-  }
-  return ids;
 }
 
 function describeHits(hits: Hit[]): string {
