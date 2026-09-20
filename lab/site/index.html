@@ -5,33 +5,43 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>beacon-parser lab</title>
 <meta name="description" content="Practice Adobe Analytics implementation with no Adobe account: a fake shop, an inspector that decodes every hit, and three exercises." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <style>
   :root {
     color-scheme: dark;
-    --bg: #0b0d10;
+    --bg: #0a0c0f;
     --bg-raised: #12151a;
     --bg-inset: #0e1013;
     --border: #22262d;
-    --text: #e6e8eb;
+    --border-hover: #333a44;
+    --text: #eef0f2;
     --text-dim: #8b93a1;
-    --text-faint: #5b6472;
+    --text-faint: #565f6b;
     --accent: #7ee787;
+    --accent-soft: #a8f0ad;
     --accent-dim: #3d6b42;
     --am-color: #7cc6ff;
     --sdk-color: #b39dff;
-    --mono: ui-monospace, "Cascadia Code", "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
-    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, "Cascadia Code", "SF Mono", Consolas, monospace;
+    --sans: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   }
 
   * { box-sizing: border-box; }
 
   body {
     margin: 0;
-    background: var(--bg);
+    background:
+      radial-gradient(50vmax 30vmax at 15% -10%, rgba(126, 231, 135, 0.07), transparent 60%),
+      var(--bg);
     color: var(--text);
     font-family: var(--sans);
-    line-height: 1.5;
+    line-height: 1.55;
   }
+
+  a { color: inherit; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
   .wrap { max-width: 1180px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
 
@@ -41,60 +51,136 @@
     justify-content: space-between;
     gap: 1.5rem;
     flex-wrap: wrap;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.75rem;
   }
 
-  .brand { display: flex; align-items: center; gap: 0.75rem; }
+  .brand { display: flex; align-items: center; gap: 0.9rem; }
 
+  .lab-mark-wrap { position: relative; width: 38px; height: 38px; flex-shrink: 0; }
+  .lab-mark-glow {
+    position: absolute; inset: -10px;
+    background: radial-gradient(circle, rgba(126, 231, 135, 0.4), transparent 70%);
+    z-index: 0;
+  }
   .lab-mark {
-    width: 34px; height: 34px; border-radius: 8px;
+    position: relative; z-index: 1;
+    width: 38px; height: 38px; border-radius: 9px;
     background: radial-gradient(circle at 35% 30%, #bff7c4, var(--accent) 60%, var(--accent-dim) 100%);
-    box-shadow: 0 0 22px 3px rgba(126, 231, 135, 0.35);
-    flex-shrink: 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
   }
 
-  h1 { font-size: 1.15rem; font-weight: 650; margin: 0; letter-spacing: -0.01em; }
-  h1 code { font-family: var(--mono); font-weight: 600; color: var(--accent); }
-  .tagline { margin: 0.15rem 0 0; color: var(--text-dim); font-size: 0.88rem; }
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 0.3rem;
+  }
 
-  nav.links { display: flex; gap: 1.1rem; align-items: center; font-size: 0.85rem; }
-  nav.links a { color: var(--text-dim); text-decoration: none; border-bottom: 1px solid transparent; padding-bottom: 2px; }
+  h1 { font-size: 1.3rem; font-weight: 600; margin: 0; letter-spacing: -0.01em; }
+  h1 code { font-family: var(--mono); font-weight: 600; color: var(--accent); }
+  .tagline { margin: 0.3rem 0 0; color: var(--text-dim); font-size: 0.88rem; max-width: 42ch; }
+
+  nav.links { display: flex; gap: 1.4rem; align-items: center; font-size: 0.85rem; }
+  nav.links a {
+    color: var(--text-dim);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    padding-bottom: 2px;
+    transition: color 140ms ease, border-color 140ms ease;
+  }
   nav.links a:hover { color: var(--accent); border-color: var(--accent-dim); }
 
   .limits {
     background: var(--bg-raised);
     border: 1px solid var(--border);
     border-radius: 10px;
-    padding: 0.85rem 1.1rem;
+    padding: 0.9rem 1.15rem;
     font-size: 0.83rem;
     color: var(--text-dim);
     margin-bottom: 1.5rem;
   }
   .limits strong { color: var(--text); }
+  .limits a { color: var(--accent-soft); }
 
   .mode-toggle {
-    display: flex;
-    gap: 0.75rem;
+    display: inline-flex;
     align-items: center;
-    background: var(--bg-raised);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 0.7rem 1rem;
+    gap: 0.65rem;
     margin-bottom: 1.5rem;
     font-size: 0.85rem;
+    color: var(--text-dim);
   }
-  .mode-toggle label { display: flex; align-items: center; gap: 0.4rem; cursor: pointer; color: var(--text-dim); }
-  .mode-toggle input:checked + span { color: var(--text); font-weight: 600; }
+
+  .mode-toggle .segmented {
+    display: flex;
+    background: var(--bg-inset);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 3px;
+    gap: 2px;
+  }
+
+  .mode-toggle label {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 0.4rem 0.85rem;
+    border-radius: 999px;
+    cursor: pointer;
+    color: var(--text-dim);
+    font-size: 0.82rem;
+    transition: color 160ms ease;
+  }
+
+  .mode-toggle input {
+    position: absolute;
+    opacity: 0;
+    width: 1px; height: 1px;
+  }
+
+  .mode-toggle input:checked + span { color: #0c2210; font-weight: 600; }
+  .mode-toggle label:has(input:checked) { background: var(--accent); }
+  .mode-toggle input:focus-visible ~ span { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 999px; }
 
   .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; align-items: start; }
   @media (max-width: 860px) { .grid { grid-template-columns: 1fr; } }
 
-  .panel { background: var(--bg-raised); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
-  .panel-bar { display: flex; align-items: center; gap: 0.6rem; padding: 0.65rem 0.9rem; border-bottom: 1px solid var(--border); background: var(--bg-inset); }
+  .panel {
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px -28px rgba(0, 0, 0, 0.6);
+  }
+  .panel-bar {
+    display: flex; align-items: center; gap: 0.6rem;
+    padding: 0.65rem 0.9rem;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg-inset);
+  }
   .dots { display: flex; gap: 6px; }
-  .dots span { width: 10px; height: 10px; border-radius: 50%; background: #3a3f47; }
+  .dots span { width: 9px; height: 9px; border-radius: 50%; }
+  .dots span:nth-child(1) { background: #ff5f57; }
+  .dots span:nth-child(2) { background: #febc2e; }
+  .dots span:nth-child(3) { background: #28c840; }
   .panel-title { font-size: 0.78rem; color: var(--text-dim); font-family: var(--mono); letter-spacing: 0.02em; }
   .panel-body { padding: 1rem; }
+
+  .clear-btn {
+    margin-left: auto;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    padding: 0.3rem 0.6rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: color 140ms ease, border-color 140ms ease;
+  }
+  .clear-btn:hover { color: var(--text); border-color: var(--border-hover); }
 
   .product-card {
     border: 1px solid var(--border);
@@ -102,9 +188,11 @@
     padding: 0.85rem;
     margin-bottom: 0.75rem;
     background: var(--bg-inset);
+    transition: border-color 160ms ease, transform 160ms ease;
   }
+  .product-card:hover { border-color: var(--border-hover); transform: translateY(-1px); }
   .product-name { font-weight: 600; }
-  .product-meta { color: var(--text-dim); font-size: 0.82rem; margin: 0.2rem 0 0.6rem; }
+  .product-meta { color: var(--text-dim); font-size: 0.82rem; margin: 0.2rem 0 0.6rem; font-family: var(--mono); }
   .product-actions { display: flex; gap: 0.5rem; }
   .product-actions button {
     background: var(--bg-raised);
@@ -114,8 +202,9 @@
     border-radius: 6px;
     font-size: 0.8rem;
     cursor: pointer;
+    transition: border-color 140ms ease, color 140ms ease;
   }
-  .product-actions button:hover { border-color: var(--accent-dim); }
+  .product-actions button:hover { border-color: var(--accent-dim); color: var(--accent-soft); }
 
   .cart-bar {
     display: flex;
@@ -127,16 +216,19 @@
     font-size: 0.85rem;
   }
   #checkoutBtn {
-    background: linear-gradient(180deg, #a3f0a8, var(--accent));
+    background: linear-gradient(180deg, var(--accent-soft), var(--accent));
     color: #0c2210;
     border: none;
     border-radius: 8px;
-    padding: 0.55rem 1rem;
+    padding: 0.55rem 1.1rem;
     font-weight: 650;
     cursor: pointer;
+    transition: filter 140ms ease, transform 80ms ease;
   }
+  #checkoutBtn:hover { filter: brightness(1.05); }
+  #checkoutBtn:active { transform: translateY(1px); }
 
-  #inspector { max-height: 60vh; overflow: auto; }
+  .inspector-scroll { max-height: 60vh; overflow: auto; }
   .empty-state { padding: 2.5rem 1.5rem; text-align: center; color: var(--text-faint); font-size: 0.85rem; }
 
   .hit-entry { border-bottom: 1px solid var(--border); }
@@ -154,19 +246,40 @@
 
   .jk { color: #7cc6ff; } .js { color: #b7e28d; } .jn { color: #ffb454; } .jb { color: #ff9f7c; } .jl { color: var(--text-faint); }
 
-  .exercises { margin-top: 2.5rem; }
-  .exercises h2 { font-size: 1rem; margin-bottom: 1rem; }
+  .exercises { margin-top: 2.75rem; }
+  .exercises h2 { font-size: 1.05rem; margin-bottom: 1rem; letter-spacing: -0.01em; }
   .exercise-card {
+    display: flex;
+    gap: 1rem;
     background: var(--bg-raised);
     border: 1px solid var(--border);
     border-radius: 10px;
-    padding: 1rem 1.25rem;
+    padding: 1.1rem 1.25rem;
     margin-bottom: 1rem;
+    transition: border-color 160ms ease;
+  }
+  .exercise-card:hover { border-color: var(--border-hover); }
+  .exercise-num {
+    flex-shrink: 0;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--bg-inset);
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--accent);
   }
   .exercise-card h3 { margin: 0 0 0.4rem; font-size: 0.95rem; }
   .exercise-card p { margin: 0.3rem 0; color: var(--text-dim); font-size: 0.85rem; }
   .exercise-card .hint { color: var(--text-faint); font-style: italic; }
-  .exercise-card a { color: var(--accent); }
+  .exercise-card a {
+    color: var(--accent-soft);
+    text-decoration: none;
+    border-bottom: 1px solid var(--accent-dim);
+    transition: color 140ms ease, border-color 140ms ease;
+  }
+  .exercise-card a:hover { color: var(--accent); border-color: var(--accent); }
 
   footer { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border); color: var(--text-faint); font-size: 0.8rem; }
   footer a { color: var(--text-dim); }
@@ -176,8 +289,12 @@
   <div class="wrap">
     <header class="top">
       <div class="brand">
-        <div class="lab-mark" aria-hidden="true"></div>
+        <div class="lab-mark-wrap">
+          <div class="lab-mark-glow" aria-hidden="true"></div>
+          <div class="lab-mark" aria-hidden="true"></div>
+        </div>
         <div>
+          <p class="eyebrow">Learning lab</p>
           <h1><code>beacon-parser</code> lab</h1>
           <p class="tagline">Practice Adobe Analytics implementation with no Adobe account.</p>
         </div>
@@ -198,9 +315,11 @@
     </div>
 
     <div class="mode-toggle">
-      <span style="color:var(--text-dim)">Tracking implementation:</span>
-      <label><input type="radio" name="mode" value="appmeasurement" checked /> <span>AppMeasurement</span></label>
-      <label><input type="radio" name="mode" value="websdk" /> <span>Web SDK</span></label>
+      <span>Tracking implementation:</span>
+      <div class="segmented">
+        <label><input type="radio" name="mode" value="appmeasurement" checked /> <span>AppMeasurement</span></label>
+        <label><input type="radio" name="mode" value="websdk" /> <span>Web SDK</span></label>
+      </div>
     </div>
 
     <div class="grid">
@@ -215,9 +334,13 @@
         </div>
       </div>
 
-      <div class="panel">
-        <div class="panel-bar"><div class="dots"><span></span><span></span><span></span></div><div class="panel-title">inspector</div></div>
-        <div id="inspector">
+      <div class="panel" id="inspector">
+        <div class="panel-bar">
+          <div class="dots"><span></span><span></span><span></span></div>
+          <div class="panel-title">inspector</div>
+          <button type="button" class="clear-btn" data-inspector-clear>clear</button>
+        </div>
+        <div class="inspector-scroll">
           <div data-inspector-list></div>
         </div>
       </div>
@@ -242,14 +365,17 @@
     import { EXERCISES } from "./exercises-data.js";
     const list = document.getElementById("exerciseList");
     list.innerHTML = EXERCISES.map(
-      (ex) => `
+      (ex, i) => `
         <div class="exercise-card">
-          <h3>${ex.title}</h3>
-          <p>${ex.goal}</p>
-          <p class="hint">Hint: ${ex.hint}</p>
-          <a href="https://github.com/bonguynvan/beacon-parser/tree/main/${ex.path}" target="_blank" rel="noopener">
-            Starter code, solution, and check on GitHub &rarr;
-          </a>
+          <div class="exercise-num">${i + 1}</div>
+          <div>
+            <h3>${ex.title.replace(/^\d+\.\s*/, "")}</h3>
+            <p>${ex.goal}</p>
+            <p class="hint">Hint: ${ex.hint}</p>
+            <a href="https://github.com/bonguynvan/beacon-parser/tree/main/${ex.path}" target="_blank" rel="noopener">
+              Starter code, solution, and check on GitHub &rarr;
+            </a>
+          </div>
         </div>
       `
     ).join("");
