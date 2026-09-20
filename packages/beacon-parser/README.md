@@ -8,8 +8,8 @@ Zero-dependency TypeScript parser that decodes Adobe Analytics network hits
 
 Part of the [beacon-parser toolkit](https://github.com/bonguynvan/beacon-parser)
 ("Omnibug is for looking, this is for testing"). See the
-[playground](https://bonguynvan.github.io/beacon-parser/) to try it without
-installing anything, and
+[lab](https://lab.averosi.com/?tab=decode) to try it without installing
+anything, and
 [docs/parameters.md](https://github.com/bonguynvan/beacon-parser/blob/main/docs/parameters.md)
 for the full AppMeasurement parameter reference, with an Adobe source cited
 next to every row.

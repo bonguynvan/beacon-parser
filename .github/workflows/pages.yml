@@ -1,11 +1,13 @@
-name: Deploy playground to GitHub Pages
+name: Deploy playground redirect to GitHub Pages
+
+# The playground itself merged into lab.averosi.com/?tab=decode -- site/ is
+# now just a static redirect stub for old inbound links, no build needed.
 
 on:
   push:
     branches: [main]
     paths:
       - "site/**"
-      - "packages/beacon-parser/**"
       - ".github/workflows/pages.yml"
   workflow_dispatch:
 
@@ -23,17 +25,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
-      - uses: pnpm/action-setup@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: pnpm
-
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm site:build
-
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

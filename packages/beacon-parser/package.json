@@ -36,7 +36,7 @@
     "url": "https://github.com/bonguynvan/beacon-parser.git",
     "directory": "packages/beacon-parser"
   },
-  "homepage": "https://bonguynvan.github.io/beacon-parser/",
+  "homepage": "https://lab.averosi.com/?tab=decode",
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",

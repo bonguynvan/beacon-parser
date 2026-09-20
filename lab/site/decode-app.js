@@ -68,13 +68,13 @@ const EXAMPLES = [
 ];
 
 const els = {
-  url: document.getElementById("url"),
-  method: document.getElementById("method"),
-  body: document.getElementById("body"),
-  examples: document.getElementById("examples"),
-  parseBtn: document.getElementById("parseBtn"),
-  output: document.getElementById("output"),
-  kindBadge: document.getElementById("kindBadge")
+  url: document.getElementById("decodeUrl"),
+  method: document.getElementById("decodeMethod"),
+  body: document.getElementById("decodeBody"),
+  examples: document.getElementById("decodeExamples"),
+  parseBtn: document.getElementById("decodeParseBtn"),
+  output: document.getElementById("decodeOutput"),
+  kindBadge: document.getElementById("decodeKindBadge")
 };
 
 for (const example of EXAMPLES) {
@@ -121,7 +121,7 @@ function runParse() {
   els.output.innerHTML = renderHit(result);
 }
 
-// Load the first example on page open so the demo isn't blank.
+// Load the first example on open so the decode panel isn't blank once selected.
 const first = EXAMPLES[0];
 els.url.value = first.url;
 els.method.value = first.method;

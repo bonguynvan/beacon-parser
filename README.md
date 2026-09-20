@@ -32,16 +32,16 @@ Supports both hit generations:
   `/b/ss/{rsid}/{version}/{code}`
 - **Web SDK (Alloy)** requests: `*/ee/*/interact` or `/collect`
 
-**[Try it live →](https://bonguynvan.github.io/beacon-parser/)** — paste a hit
+**[Try it live →](https://lab.averosi.com/?tab=decode)** — paste a hit
 URL/body and see it decoded in your browser, using the same built package
-this repo ships ([source](site/)).
+this repo ships.
 
 **[Practice implementation →](https://lab.averosi.com)** — no Adobe account
 needed: a fake shop with a live hit inspector and three exercises with
 automated checks, so you can learn hit anatomy hands-on ([source](lab/)).
 
 **[averosi.com →](https://averosi.com)** — the toolkit's homepage, one link
-to every package plus the playground and the lab above.
+to every package plus the lab above.
 
 ## beacon-parser vs Omnibug
 

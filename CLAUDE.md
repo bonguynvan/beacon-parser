@@ -47,7 +47,7 @@ These apply regardless of whether PLAN.md is available to you. Not legal
 advice; when unsure, stop and ask the maintainer.
 - Never imply Adobe affiliation, endorsement, or sponsorship. Public pages
   carry: "Independent project. Not affiliated with, endorsed by, or sponsored
-  by Adobe." (README.md, package READMEs, and site/index.html already do.)
+  by Adobe." (README.md, package READMEs, and lab/site/index.html already do.)
 - No Adobe logos/branding, and no "Adobe" in package names, domains, or app
   names. Product names only in factual, descriptive use.
 - Never redistribute Adobe proprietary code. Adobe libraries (e.g.
@@ -120,16 +120,18 @@ advice; when unsure, stop and ask the maintainer.
 - `pnpm build` (tsup: ESM + CJS + d.ts, both packages)
 - `pnpm test` (Vitest for beacon-parser, `playwright test` for beacon-playwright)
 - `pnpm test:lab` (runs the lab's 3 exercise checks against `solution.html` — what CI runs; `pnpm --filter lab test` runs them against `starter.html` instead, which is expected to fail until a learner fixes it)
-- `pnpm site:build` / `pnpm lab:build` (copy the built parser + `shared/hit-render.js` into `site/` / `lab/site/` for static hosting)
+- `pnpm lab:build` (copy the built parser + `shared/hit-render.js` into `lab/site/` for static hosting)
 - `pnpm lint` / `pnpm typecheck`
 - Run lint, typecheck, and test after every change and fix failures before moving on.
 
 ## Structure
 - `packages/beacon-parser/` — the published parser package
 - `packages/beacon-playwright/` — the published Playwright capture/matchers package (Phase 2); depends on beacon-parser, treats `@playwright/test` as a peer dep only
-- `site/` — the parser playground, deployed to GitHub Pages
-- `lab/` — the learning lab (Phase 1.5): `site/` (tiny shop + live inspector, deployed separately to Cloudflare Pages), `exercises/` (3 exercises, each with `starter.html`/`solution.html`/`check.spec.ts` using real `@bonv/beacon-playwright` matchers)
-- `shared/hit-render.js` — JSON syntax highlighter + kind-badge renderer shared between `site/` and `lab/site/` (each copies it in at build time; they're independently-deployed static sites, can't import across origins)
+- `packages/tracking-plan/` — the published tracking-plan-as-code package (Phase 3); depends on beacon-parser only
+- `packages/cli/` — the published `beacon-qa` CLI (Phase 4); depends on beacon-parser, beacon-playwright, tracking-plan, and `playwright` itself (the only package with a real, non-workspace runtime dependency)
+- `lab/` — the hosted tool at `lab.averosi.com` (Cloudflare Pages): `site/` (tiny shop + live inspector + a "Decode a hit" tab — the former standalone GitHub Pages playground merged in here so there's one hosted destination instead of two), `exercises/` (3 exercises, each with `starter.html`/`solution.html`/`check.spec.ts` using real `@bonv/beacon-playwright` matchers)
+- `site/` — now just a static redirect stub on GitHub Pages (`bonguynvan.github.io/beacon-parser/` → `lab.averosi.com/?tab=decode`) for old inbound links; not a page to edit for features
+- `shared/hit-render.js` — JSON syntax highlighter + kind-badge renderer, copied into `lab/site/` at build time (kept as a shared file since other static pages may need it again later)
 - `fixtures/` — anonymized sample hits for beacon-parser (input + expected output JSON)
 - `scripts/` — dev-only tooling (e.g. Playwright fixture capture). NOT published.
 - `docs/parameters.md` — AppMeasurement parameter lookup table
