@@ -337,6 +337,25 @@
   }
   .exercise-card a:hover { color: var(--green); border-color: var(--green); }
 
+  .toolkit-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+  @media (max-width: 640px) { .toolkit-grid { grid-template-columns: 1fr; } }
+  .toolkit-card {
+    display: block;
+    background: var(--glass-raised);
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    padding: 1.1rem 1.25rem;
+    text-decoration: none;
+    color: var(--text);
+    transition: border-color 160ms ease, transform 160ms ease;
+  }
+  .toolkit-card:hover { border-color: var(--border-hover); transform: translateY(-2px); }
+  .toolkit-card strong { font-family: var(--mono); font-size: 0.88rem; color: var(--green); display: block; margin-bottom: 0.4rem; }
+  .toolkit-card span { color: var(--text-dim); font-size: 0.84rem; line-height: 1.5; }
+  .toolkit-card code { font-family: var(--mono); font-size: 0.82rem; color: var(--text); background: var(--glass-inset); padding: 0.05rem 0.35rem; border-radius: 4px; }
+  .toolkit-card a { color: var(--teal); position: relative; z-index: 1; }
+
   footer { margin-top: 3.5rem; padding-top: 1.6rem; border-top: 1px solid var(--glass-border); color: var(--text-faint); font-size: 0.8rem; }
   footer a { color: var(--text-dim); }
 </style>
@@ -408,6 +427,28 @@
     <div class="exercises">
       <h2>Exercises</h2>
       <div id="exerciseList"></div>
+    </div>
+
+    <div class="exercises">
+      <h2>The rest of the toolkit</h2>
+      <div class="toolkit-grid">
+        <a class="toolkit-card" href="https://www.npmjs.com/package/@bonv/beacon-parser" target="_blank" rel="noopener">
+          <strong>@bonv/beacon-parser</strong>
+          <span>Decode any AppMeasurement or Web SDK hit into typed JSON. Zero runtime dependencies.</span>
+        </a>
+        <a class="toolkit-card" href="https://www.npmjs.com/package/@bonv/beacon-playwright" target="_blank" rel="noopener">
+          <strong>@bonv/beacon-playwright</strong>
+          <span>Capture hits in a Playwright test and assert on them with matchers like <code>toHaveAdobeEvent</code>.</span>
+        </a>
+        <a class="toolkit-card" href="https://www.npmjs.com/package/@bonv/tracking-plan" target="_blank" rel="noopener">
+          <strong>@bonv/tracking-plan</strong>
+          <span>Define a tracking plan as a typed object and validate captured hits against it.</span>
+        </a>
+        <a class="toolkit-card" href="https://www.npmjs.com/package/@bonv/beacon-cli" target="_blank" rel="noopener">
+          <strong>@bonv/beacon-cli</strong>
+          <span><code>npx beacon-qa</code> runs a tracking plan against real flows in CI and exits non-zero on failure.</span>
+        </a>
+      </div>
     </div>
 
     <footer>
