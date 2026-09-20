@@ -1,5 +1,9 @@
 # beacon-parser
 
+[![npm @bonv/beacon-parser](https://img.shields.io/npm/v/%40bonv%2Fbeacon-parser?label=%40bonv%2Fbeacon-parser)](https://www.npmjs.com/package/@bonv/beacon-parser)
+[![npm @bonv/beacon-playwright](https://img.shields.io/npm/v/%40bonv%2Fbeacon-playwright?label=%40bonv%2Fbeacon-playwright)](https://www.npmjs.com/package/@bonv/beacon-playwright)
+[![License: Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-blue)](LICENSE)
+
 > Independent project. Not affiliated with, endorsed by, or sponsored by
 > Adobe. Adobe, Adobe Analytics, and AppMeasurement are trademarks of their
 > respective owners.
@@ -25,6 +29,10 @@ Supports both hit generations:
 **[Try it live →](https://bonguynvan.github.io/beacon-parser/)** — paste a hit
 URL/body and see it decoded in your browser, using the same built package
 this repo ships ([source](site/)).
+
+**[Practice implementation →](https://lab.averosi.com)** — no Adobe account
+needed: a fake shop with a live hit inspector and three exercises with
+automated checks, so you can learn hit anatomy hands-on ([source](lab/)).
 
 ## beacon-parser vs Omnibug
 

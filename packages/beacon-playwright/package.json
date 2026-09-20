@@ -34,6 +34,7 @@
     "url": "https://github.com/bonguynvan/beacon-parser.git",
     "directory": "packages/beacon-playwright"
   },
+  "homepage": "https://github.com/bonguynvan/beacon-parser/tree/main/packages/beacon-playwright#readme",
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
