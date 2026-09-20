@@ -1,7 +1,7 @@
 # beacon-parser
 
-Open-source TypeScript toolkit for Adobe Analytics tag QA. See
-[PLAN.md](PLAN.md) for the full roadmap. Two packages so far:
+Open-source TypeScript toolkit for Adobe Analytics tag QA — "Omnibug is for
+looking, this is for testing." Two packages so far:
 
 - [`@bonv/beacon-parser`](packages/beacon-parser) — zero-dependency parser
   that decodes Adobe Analytics network hits into clean, normalized JSON.

@@ -1,9 +1,11 @@
 # CLAUDE.md
 
 ## Project
-**Read PLAN.md first — it explains why this repo exists and is the source of
-truth for phases, goals, and non-goals.** This section is a summary, not a
-replacement for it.
+**If a local `PLAN.md` exists in this repo, read it first** — it's the
+maintainer's private roadmap doc (git-ignored, intentionally not part of the
+public repo — it's their own idea/plan, kept off GitHub on purpose) and is
+the source of truth for phases, goals, and non-goals when present. This
+section is a public-safe summary for contributors who don't have it.
 
 Programmatic Adobe Analytics tag QA toolkit, runnable in CI ("Omnibug is for
 looking, this is for testing"). `@bonv/beacon-parser` is the foundation, not
