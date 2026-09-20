@@ -1,4 +1,4 @@
-import type { AdobeHit } from "./types.js";
+import type { AdobeHit, ContextData } from "./types.js";
 
 /**
  * Extracts the page name from either hit generation: AppMeasurement's
@@ -29,4 +29,22 @@ export function eventIdsOf(hit: AdobeHit): string[] {
     }
   }
   return ids;
+}
+
+/**
+ * Extracts context data from either hit generation: AppMeasurement's
+ * top-level `contextData`, or every Web SDK event's
+ * `__adobe.analytics.contextData`, shallow-merged in event order (a later
+ * event's key wins over an earlier one with the same key).
+ */
+export function contextDataOf(hit: AdobeHit): ContextData {
+  if (hit.kind === "appmeasurement") return hit.contextData;
+
+  let merged: ContextData = {};
+  for (const event of hit.events) {
+    if (event.analytics?.contextData) {
+      merged = { ...merged, ...event.analytics.contextData };
+    }
+  }
+  return merged;
 }

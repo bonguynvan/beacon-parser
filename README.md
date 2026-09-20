@@ -9,7 +9,7 @@
 > respective owners.
 
 Open-source TypeScript toolkit for Adobe Analytics tag QA — "Omnibug is for
-looking, this is for testing." Two packages so far:
+looking, this is for testing." Three packages so far:
 
 - [`@bonv/beacon-parser`](packages/beacon-parser) — zero-dependency parser
   that decodes Adobe Analytics network hits into clean, normalized JSON.
@@ -19,6 +19,9 @@ looking, this is for testing." Two packages so far:
 - [`@bonv/beacon-playwright`](packages/beacon-playwright) — capture hits
   during a Playwright test and assert on them with matchers like
   `toHaveAdobeEvent`/`toHaveEvar`.
+- [`@bonv/tracking-plan`](packages/tracking-plan) — define a tracking plan
+  as a plain TypeScript object and validate captured hits against it, with
+  structured pass/fail reasons instead of manual `expect()` calls per field.
 
 Supports both hit generations:
 
