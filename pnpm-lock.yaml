@@ -30,6 +30,24 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  lab:
+    devDependencies:
+      '@bonv/beacon-parser':
+        specifier: workspace:*
+        version: link:../packages/beacon-parser
+      '@bonv/beacon-playwright':
+        specifier: workspace:*
+        version: link:../packages/beacon-playwright
+      '@playwright/test':
+        specifier: ^1.48.2
+        version: 1.63.0
+      '@types/node':
+        specifier: ^22.9.0
+        version: 22.20.4
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   packages/beacon-parser:
     devDependencies:
       '@types/node':

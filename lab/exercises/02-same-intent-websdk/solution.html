@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8" /><title>Exercise 2 -- solution</title></head>
+<body>
+  <button id="download">Download brochure</button>
+  <script>
+    document.getElementById("download").addEventListener("click", () => {
+      const url = "https://fake-edge.exercise.invalid/ee/v1/interact?configId=fake-datastream";
+      const body = JSON.stringify({
+        events: [
+          {
+            xdm: { eventType: "web.webinteraction.linkClicks" },
+            data: {
+              __adobe: {
+                analytics: {
+                  // Same pageName exercise 1's AppMeasurement version sent.
+                  pageName: "product-detail",
+                  // The event id itself carries what exercise 1 expressed
+                  // via pev2 (the link name) -- there's no separate
+                  // "link name" field in Web SDK, the event id does that job.
+                  events: ["download-brochure"],
+                  // There's no numbered eVar on the wire in Web SDK -- that
+                  // mapping happens server-side, in the datastream config.
+                  // What you control here is a descriptive key under
+                  // contextData; a real implementation would map this to
+                  // an eVar via the Analytics extension/datastream setup,
+                  // not from the client.
+                  contextData: { "asset.name": "whitepaper-2024" }
+                }
+              }
+            }
+          }
+        ]
+      });
+      fetch(url, { method: "POST", body });
+    });
+  </script>
+</body>
+</html>

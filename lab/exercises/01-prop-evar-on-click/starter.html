@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8" /><title>Exercise 1 -- starter</title></head>
+<body>
+  <button id="download">Download brochure</button>
+  <script>
+    document.getElementById("download").addEventListener("click", () => {
+      const url =
+        "https://fake-tracker.exercise.invalid/b/ss/examplecompanyprod/1/code" +
+        "?pageName=product-detail&v5=whitepaper-2024";
+      // TODO: this hit needs to show up as a *link* click, named
+      // "download-brochure" -- not just a page view. Adobe uses two more
+      // query params for that. See README.md for the hint.
+      new Image().src = url;
+    });
+  </script>
+</body>
+</html>

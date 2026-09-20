@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8" /><title>Exercise 3 -- starter</title></head>
+<body>
+  <!--
+    TODO: this button fires its purchase hit TWICE per click. Find out why
+    and fix it so it fires exactly once. See README.md for the hint.
+  -->
+  <button id="buy" onclick="trackPurchase()">Buy now</button>
+  <script>
+    function trackPurchase() {
+      // The random suffix matters here, same as it does in a real
+      // AppMeasurement hit: without one, two identical concurrent image
+      // requests to the exact same URL can get deduplicated by the browser
+      // into what looks like a single request -- masking exactly the bug
+      // this exercise is about.
+      const cacheBuster = Math.random().toString(36).slice(2);
+      const url =
+        `https://fake-tracker.exercise.invalid/b/ss/examplecompanyprod/1/code-${cacheBuster}` +
+        "?pageName=checkout-confirmation&events=purchase&v2=49.98";
+      new Image().src = url;
+    }
+
+    document.getElementById("buy").addEventListener("click", trackPurchase);
+  </script>
+</body>
+</html>

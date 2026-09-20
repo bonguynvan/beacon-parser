@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync } from "node:fs";
+import { readFileSync, writeFileSync, copyFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -10,5 +10,9 @@ const dest = path.join(here, "beacon-parser.js");
 // alongside the renamed file, so a stale reference would just 404.
 const contents = readFileSync(src, "utf-8").replace(/\n?\/\/# sourceMappingURL=.*$/, "");
 writeFileSync(dest, contents);
-
 console.log(`site/build.mjs: copied ${src} -> ${dest}`);
+
+const sharedSrc = path.resolve(here, "../shared/hit-render.js");
+const sharedDest = path.join(here, "hit-render.js");
+copyFileSync(sharedSrc, sharedDest);
+console.log(`site/build.mjs: copied ${sharedSrc} -> ${sharedDest}`);

@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>beacon-parser lab</title>
+<meta name="description" content="Practice Adobe Analytics implementation with no Adobe account: a fake shop, an inspector that decodes every hit, and three exercises." />
+<style>
+  :root {
+    color-scheme: dark;
+    --bg: #0b0d10;
+    --bg-raised: #12151a;
+    --bg-inset: #0e1013;
+    --border: #22262d;
+    --text: #e6e8eb;
+    --text-dim: #8b93a1;
+    --text-faint: #5b6472;
+    --accent: #7ee787;
+    --accent-dim: #3d6b42;
+    --am-color: #7cc6ff;
+    --sdk-color: #b39dff;
+    --mono: ui-monospace, "Cascadia Code", "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    line-height: 1.5;
+  }
+
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+
+  header.top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+  }
+
+  .brand { display: flex; align-items: center; gap: 0.75rem; }
+
+  .lab-mark {
+    width: 34px; height: 34px; border-radius: 8px;
+    background: radial-gradient(circle at 35% 30%, #bff7c4, var(--accent) 60%, var(--accent-dim) 100%);
+    box-shadow: 0 0 22px 3px rgba(126, 231, 135, 0.35);
+    flex-shrink: 0;
+  }
+
+  h1 { font-size: 1.15rem; font-weight: 650; margin: 0; letter-spacing: -0.01em; }
+  h1 code { font-family: var(--mono); font-weight: 600; color: var(--accent); }
+  .tagline { margin: 0.15rem 0 0; color: var(--text-dim); font-size: 0.88rem; }
+
+  nav.links { display: flex; gap: 1.1rem; align-items: center; font-size: 0.85rem; }
+  nav.links a { color: var(--text-dim); text-decoration: none; border-bottom: 1px solid transparent; padding-bottom: 2px; }
+  nav.links a:hover { color: var(--accent); border-color: var(--accent-dim); }
+
+  .limits {
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.85rem 1.1rem;
+    font-size: 0.83rem;
+    color: var(--text-dim);
+    margin-bottom: 1.5rem;
+  }
+  .limits strong { color: var(--text); }
+
+  .mode-toggle {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.7rem 1rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.85rem;
+  }
+  .mode-toggle label { display: flex; align-items: center; gap: 0.4rem; cursor: pointer; color: var(--text-dim); }
+  .mode-toggle input:checked + span { color: var(--text); font-weight: 600; }
+
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; align-items: start; }
+  @media (max-width: 860px) { .grid { grid-template-columns: 1fr; } }
+
+  .panel { background: var(--bg-raised); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+  .panel-bar { display: flex; align-items: center; gap: 0.6rem; padding: 0.65rem 0.9rem; border-bottom: 1px solid var(--border); background: var(--bg-inset); }
+  .dots { display: flex; gap: 6px; }
+  .dots span { width: 10px; height: 10px; border-radius: 50%; background: #3a3f47; }
+  .panel-title { font-size: 0.78rem; color: var(--text-dim); font-family: var(--mono); letter-spacing: 0.02em; }
+  .panel-body { padding: 1rem; }
+
+  .product-card {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.85rem;
+    margin-bottom: 0.75rem;
+    background: var(--bg-inset);
+  }
+  .product-name { font-weight: 600; }
+  .product-meta { color: var(--text-dim); font-size: 0.82rem; margin: 0.2rem 0 0.6rem; }
+  .product-actions { display: flex; gap: 0.5rem; }
+  .product-actions button {
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 0.4rem 0.7rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    cursor: pointer;
+  }
+  .product-actions button:hover { border-color: var(--accent-dim); }
+
+  .cart-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.85rem;
+  }
+  #checkoutBtn {
+    background: linear-gradient(180deg, #a3f0a8, var(--accent));
+    color: #0c2210;
+    border: none;
+    border-radius: 8px;
+    padding: 0.55rem 1rem;
+    font-weight: 650;
+    cursor: pointer;
+  }
+
+  #inspector { max-height: 60vh; overflow: auto; }
+  .empty-state { padding: 2.5rem 1.5rem; text-align: center; color: var(--text-faint); font-size: 0.85rem; }
+
+  .hit-entry { border-bottom: 1px solid var(--border); }
+  .hit-entry:last-child { border-bottom: none; }
+  .hit-entry-bar { display: flex; align-items: center; gap: 0.6rem; padding: 0.5rem 0.9rem; background: var(--bg-inset); }
+  .hit-entry-index { font-family: var(--mono); font-size: 0.75rem; color: var(--text-faint); }
+  .hit-entry-body { margin: 0; padding: 0.75rem 0.9rem; font-family: var(--mono); font-size: 0.78rem; overflow-x: auto; }
+
+  .kind-badge { display: inline-flex; align-items: center; gap: 0.4rem; font-family: var(--mono); font-size: 0.76rem; padding: 0.2rem 0.55rem; border-radius: 999px; border: 1px solid var(--border); }
+  .kind-badge .dot { width: 7px; height: 7px; border-radius: 50%; }
+  .kind-appmeasurement { color: var(--am-color); border-color: color-mix(in srgb, var(--am-color) 35%, var(--border)); }
+  .kind-appmeasurement .dot { background: var(--am-color); }
+  .kind-websdk { color: var(--sdk-color); border-color: color-mix(in srgb, var(--sdk-color) 35%, var(--border)); }
+  .kind-websdk .dot { background: var(--sdk-color); }
+
+  .jk { color: #7cc6ff; } .js { color: #b7e28d; } .jn { color: #ffb454; } .jb { color: #ff9f7c; } .jl { color: var(--text-faint); }
+
+  .exercises { margin-top: 2.5rem; }
+  .exercises h2 { font-size: 1rem; margin-bottom: 1rem; }
+  .exercise-card {
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1rem;
+  }
+  .exercise-card h3 { margin: 0 0 0.4rem; font-size: 0.95rem; }
+  .exercise-card p { margin: 0.3rem 0; color: var(--text-dim); font-size: 0.85rem; }
+  .exercise-card .hint { color: var(--text-faint); font-style: italic; }
+  .exercise-card a { color: var(--accent); }
+
+  footer { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border); color: var(--text-faint); font-size: 0.8rem; }
+  footer a { color: var(--text-dim); }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="top">
+      <div class="brand">
+        <div class="lab-mark" aria-hidden="true"></div>
+        <div>
+          <h1><code>beacon-parser</code> lab</h1>
+          <p class="tagline">Practice Adobe Analytics implementation with no Adobe account.</p>
+        </div>
+      </div>
+      <nav class="links">
+        <a href="https://github.com/bonguynvan/beacon-parser" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://experienceleague.adobe.com/en/docs/analytics" target="_blank" rel="noopener">Adobe Experience League</a>
+      </nav>
+    </header>
+
+    <div class="limits">
+      <strong>Independent, educational project.</strong> Not affiliated with, endorsed by, or
+      sponsored by Adobe. Every "tracking call" below is intercepted before it leaves your
+      browser -- nothing is ever sent anywhere, real or fake. This teaches what a browser
+      <em>sends</em>, never what a report would show; see
+      <a href="https://experienceleague.adobe.com/en/docs/analytics" target="_blank" rel="noopener">Adobe Experience League</a>
+      for the official docs and the reporting side.
+    </div>
+
+    <div class="mode-toggle">
+      <span style="color:var(--text-dim)">Tracking implementation:</span>
+      <label><input type="radio" name="mode" value="appmeasurement" checked /> <span>AppMeasurement</span></label>
+      <label><input type="radio" name="mode" value="websdk" /> <span>Web SDK</span></label>
+    </div>
+
+    <div class="grid">
+      <div class="panel">
+        <div class="panel-bar"><div class="dots"><span></span><span></span><span></span></div><div class="panel-title">shop</div></div>
+        <div class="panel-body">
+          <div id="productList"></div>
+          <div class="cart-bar">
+            <span>Cart: <strong id="cartCount">0</strong></span>
+            <button type="button" id="checkoutBtn">Checkout</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-bar"><div class="dots"><span></span><span></span><span></span></div><div class="panel-title">inspector</div></div>
+        <div id="inspector">
+          <div data-inspector-list></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="exercises">
+      <h2>Exercises</h2>
+      <div id="exerciseList"></div>
+    </div>
+
+    <footer>
+      Independent project. Not affiliated with, endorsed by, or sponsored by Adobe. Adobe and
+      Adobe Analytics are trademarks of their respective owners.
+      <br />
+      Source: <a href="https://github.com/bonguynvan/beacon-parser/tree/main/lab" target="_blank" rel="noopener">lab/</a>
+      in the beacon-parser repo. Built on
+      <a href="https://github.com/bonguynvan/beacon-parser/tree/main/packages/beacon-parser" target="_blank" rel="noopener">@bonv/beacon-parser</a>.
+    </footer>
+  </div>
+
+  <script type="module">
+    import { EXERCISES } from "./exercises-data.js";
+    const list = document.getElementById("exerciseList");
+    list.innerHTML = EXERCISES.map(
+      (ex) => `
+        <div class="exercise-card">
+          <h3>${ex.title}</h3>
+          <p>${ex.goal}</p>
+          <p class="hint">Hint: ${ex.hint}</p>
+          <a href="https://github.com/bonguynvan/beacon-parser/tree/main/${ex.path}" target="_blank" rel="noopener">
+            Starter code, solution, and check on GitHub &rarr;
+          </a>
+        </div>
+      `
+    ).join("");
+  </script>
+  <script type="module" src="./lab-app.js"></script>
+</body>
+</html>

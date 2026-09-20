@@ -1,0 +1,20 @@
+{
+  "name": "lab",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Client-side learning lab for Adobe Analytics implementation. Not part of any published package.",
+  "type": "module",
+  "scripts": {
+    "test": "playwright test",
+    "test:solutions": "node test-solutions.mjs",
+    "build": "node build.mjs",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@bonv/beacon-parser": "workspace:*",
+    "@bonv/beacon-playwright": "workspace:*",
+    "@playwright/test": "^1.48.2",
+    "@types/node": "^22.9.0",
+    "typescript": "^5.6.3"
+  }
+}

@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8" /><title>Exercise 2 -- starter</title></head>
+<body>
+  <button id="download">Download brochure</button>
+  <script>
+    document.getElementById("download").addEventListener("click", () => {
+      const url = "https://fake-edge.exercise.invalid/ee/v1/interact?configId=fake-datastream";
+      const body = JSON.stringify({
+        events: [
+          {
+            xdm: { eventType: "web.webinteraction.linkClicks" }
+            // TODO: this event carries no Analytics-specific data at all.
+            // Exercise 1's AppMeasurement version sent pageName
+            // "product-detail" and an eVar5 value of "whitepaper-2024",
+            // tagged as a link named "download-brochure". Make this Web
+            // SDK event carry the same *intent* -- see README.md for where
+            // that data goes in the Web SDK shape.
+          }
+        ]
+      });
+      fetch(url, { method: "POST", body });
+    });
+  </script>
+</body>
+</html>

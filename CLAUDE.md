@@ -19,17 +19,20 @@ building instead of proceeding.
 
 Status as of this file's last edit: Phase 1 (parser) is code-complete —
 published on GitHub, playground built, npm publish in progress. Phase 1.5
-(launch: blog post, positioning vs Omnibug) is partially done — README
+(launch: blog post, positioning vs Omnibug, lab v0) is in progress — README
 positioning shipped, blog/LinkedIn/community posts explicitly deferred by
-the maintainer (not skipped, just not blocking). **Phase 2 (Playwright test
-layer) is done, including the stretch goal** — `capture.ts` + `matchers.ts`
-in `@bonv/beacon-playwright` (`captureAdobeHits`, `toHaveAdobeHit`,
-`toHaveAdobeEvent`, `toHaveEvar`, `toHaveProp`) are built and tested
-end-to-end with real Chromium; `diffAdobeHits` (migration parity diff) is
-built in `@bonv/beacon-parser` instead of beacon-playwright (it's pure data
-comparison with zero Playwright dependency — see the diff.ts module
-comment for the pageName-then-position matching strategy that was decided
-before implementing).
+the maintainer (not skipped, just not blocking); **the lab (`lab/`) is
+built** — tiny shop, live inspector, 3 exercises with real Playwright
+checks, all verified end-to-end — but not yet deployed (maintainer is
+connecting Cloudflare Pages to `lab.averosi.com` themselves). **Phase 2
+(Playwright test layer) is done, including the stretch goal** —
+`capture.ts` + `matchers.ts` in `@bonv/beacon-playwright` (`captureAdobeHits`,
+`toHaveAdobeHit`, `toHaveAdobeEvent`, `toHaveEvar`, `toHaveProp`) are built
+and tested end-to-end with real Chromium; `diffAdobeHits` (migration parity
+diff) is built in `@bonv/beacon-parser` instead of beacon-playwright (it's
+pure data comparison with zero Playwright dependency — see the diff.ts
+module comment for the pageName-then-position matching strategy that was
+decided before implementing).
 
 Supported hit generations (parser, Phase 1):
 1. AppMeasurement image requests (`/b/ss/{rsid}/{version}/{code}`, incl. POST bodies)
@@ -116,12 +119,17 @@ advice; when unsure, stop and ask the maintainer.
 - `pnpm exec playwright install chromium` (once, before running tests — beacon-playwright's own test suite needs a real browser)
 - `pnpm build` (tsup: ESM + CJS + d.ts, both packages)
 - `pnpm test` (Vitest for beacon-parser, `playwright test` for beacon-playwright)
+- `pnpm test:lab` (runs the lab's 3 exercise checks against `solution.html` — what CI runs; `pnpm --filter lab test` runs them against `starter.html` instead, which is expected to fail until a learner fixes it)
+- `pnpm site:build` / `pnpm lab:build` (copy the built parser + `shared/hit-render.js` into `site/` / `lab/site/` for static hosting)
 - `pnpm lint` / `pnpm typecheck`
 - Run lint, typecheck, and test after every change and fix failures before moving on.
 
 ## Structure
 - `packages/beacon-parser/` — the published parser package
 - `packages/beacon-playwright/` — the published Playwright capture/matchers package (Phase 2); depends on beacon-parser, treats `@playwright/test` as a peer dep only
+- `site/` — the parser playground, deployed to GitHub Pages
+- `lab/` — the learning lab (Phase 1.5): `site/` (tiny shop + live inspector, deployed separately to Cloudflare Pages), `exercises/` (3 exercises, each with `starter.html`/`solution.html`/`check.spec.ts` using real `@bonv/beacon-playwright` matchers)
+- `shared/hit-render.js` — JSON syntax highlighter + kind-badge renderer shared between `site/` and `lab/site/` (each copies it in at build time; they're independently-deployed static sites, can't import across origins)
 - `fixtures/` — anonymized sample hits for beacon-parser (input + expected output JSON)
 - `scripts/` — dev-only tooling (e.g. Playwright fixture capture). NOT published.
 - `docs/parameters.md` — AppMeasurement parameter lookup table

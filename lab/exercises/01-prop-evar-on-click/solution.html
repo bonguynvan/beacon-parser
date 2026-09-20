@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8" /><title>Exercise 1 -- solution</title></head>
+<body>
+  <button id="download">Download brochure</button>
+  <script>
+    document.getElementById("download").addEventListener("click", () => {
+      const url =
+        "https://fake-tracker.exercise.invalid/b/ss/examplecompanyprod/1/code" +
+        "?pageName=product-detail&v5=whitepaper-2024" +
+        // pe=lnk_o marks this as a custom link hit, not a page view --
+        // without it, this would just be a regular page view that happens
+        // to carry an eVar.
+        "&pe=lnk_o" +
+        // pev2 is the link's display name -- what shows up in the "Custom
+        // Link" dimension in reports.
+        "&pev2=download-brochure";
+      new Image().src = url;
+    });
+  </script>
+</body>
+</html>

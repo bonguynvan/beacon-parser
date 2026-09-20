@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8" /><title>Exercise 3 -- solution</title></head>
+<body>
+  <!--
+    The bug was two separate handlers firing trackPurchase() for the same
+    click: the inline onclick attribute AND the addEventListener call
+    below. Removing the inline attribute (keeping only addEventListener)
+    fixes it -- a very common real-world pattern when someone adds a new
+    listener without noticing an old inline handler is still there.
+  -->
+  <button id="buy">Buy now</button>
+  <script>
+    function trackPurchase() {
+      const cacheBuster = Math.random().toString(36).slice(2);
+      const url =
+        `https://fake-tracker.exercise.invalid/b/ss/examplecompanyprod/1/code-${cacheBuster}` +
+        "?pageName=checkout-confirmation&events=purchase&v2=49.98";
+      new Image().src = url;
+    }
+
+    document.getElementById("buy").addEventListener("click", trackPurchase);
+  </script>
+</body>
+</html>
