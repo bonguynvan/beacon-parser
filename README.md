@@ -1,5 +1,9 @@
 # beacon-parser
 
+> Independent project. Not affiliated with, endorsed by, or sponsored by
+> Adobe. Adobe, Adobe Analytics, and AppMeasurement are trademarks of their
+> respective owners.
+
 Open-source TypeScript toolkit for Adobe Analytics tag QA — "Omnibug is for
 looking, this is for testing." Two packages so far:
 

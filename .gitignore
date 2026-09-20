@@ -10,5 +10,6 @@ playwright-report/
 blob-report/
 playwright/.cache/
 
-# Private roadmap/idea doc -- intentionally not part of the public repo.
+# Private roadmap/idea docs -- intentionally not part of the public repo.
 PLAN.md
+LAB_SPEC.md

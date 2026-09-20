@@ -39,6 +39,28 @@ Out of scope until PLAN.md says otherwise: CLI, tracking-plan-as-code,
 AppMeasurement -> Web SDK codemod, any human-facing debugger UI (PLAN.md §4
 non-goal — Omnibug already covers that).
 
+## Adobe-interest guardrails (public-safe summary — full version, with the why, is in the private PLAN.md §4b if present)
+These apply regardless of whether PLAN.md is available to you. Not legal
+advice; when unsure, stop and ask the maintainer.
+- Never imply Adobe affiliation, endorsement, or sponsorship. Public pages
+  carry: "Independent project. Not affiliated with, endorsed by, or sponsored
+  by Adobe." (README.md, package READMEs, and site/index.html already do.)
+- No Adobe logos/branding, and no "Adobe" in package names, domains, or app
+  names. Product names only in factual, descriptive use.
+- Never redistribute Adobe proprietary code. Adobe libraries (e.g.
+  `@adobe/alloy`) are installed from official npm/CDN, pinned, never vendored
+  — see `docs/THIRD_PARTY.md`, update it before adding any new Adobe dependency.
+- Never hit a real Adobe endpoint from tests or tooling, even with fake IDs —
+  use non-routable hosts (e.g. `.invalid` domains) or local interception.
+- Do not build anything that imitates or replaces Adobe's reporting product
+  (no Analysis-Workspace-like UI, no segmentation/attribution engine).
+- Do not scrape, mirror, or circumvent access to Adobe's gated
+  docs/sandboxes/entitlements. Link to official resources instead.
+- Do not copy Adobe documentation text — paraphrase and cite a source link
+  per claim; mark unknowns `TODO: verify` rather than guessing.
+- Only decode what a client visibly sends and what public docs describe; label
+  anything inferred as "observed, undocumented."
+
 ## Hard rules (never break)
 - `parseHit()` must NEVER throw on unknown, malformed, or random input.
   Unknown params are preserved under `raw` / `unknown`, never dropped.
@@ -103,6 +125,9 @@ non-goal — Omnibug already covers that).
 - `fixtures/` — anonymized sample hits for beacon-parser (input + expected output JSON)
 - `scripts/` — dev-only tooling (e.g. Playwright fixture capture). NOT published.
 - `docs/parameters.md` — AppMeasurement parameter lookup table
+- `docs/THIRD_PARTY.md` — every Adobe-owned library referenced anywhere in the
+  repo, its license, and whether it's redistributed (it never is). Add a row
+  here before adding any new Adobe dependency, anywhere, including a future lab.
 
 ## Conventions
 - TypeScript `strict`. No `any` without a comment explaining why.

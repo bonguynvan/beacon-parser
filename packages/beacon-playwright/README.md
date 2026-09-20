@@ -1,5 +1,8 @@
 # @bonv/beacon-playwright
 
+> Independent project. Not affiliated with, endorsed by, or sponsored by
+> Adobe. Adobe and Adobe Analytics are trademarks of their respective owners.
+
 Capture and assert on Adobe Analytics hits (AppMeasurement + Web SDK) in
 Playwright tests. Built on [`@bonv/beacon-parser`](../beacon-parser) — the
 same zero-dependency decoder, wired into a real browser session.

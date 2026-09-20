@@ -1,5 +1,8 @@
 # @bonv/beacon-parser
 
+> Independent project. Not affiliated with, endorsed by, or sponsored by
+> Adobe. Adobe and Adobe Analytics are trademarks of their respective owners.
+
 Zero-dependency TypeScript parser that decodes Adobe Analytics network hits
 (AppMeasurement + Web SDK) into clean, normalized JSON.
 
