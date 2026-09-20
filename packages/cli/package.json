@@ -1,0 +1,49 @@
+{
+  "name": "@bonv/beacon-cli",
+  "version": "0.1.0",
+  "description": "CLI that runs Adobe Analytics tracking-plan checks against real flows in CI, exiting non-zero on failure.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "bin": {
+    "beacon-qa": "./dist/cli.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "adobe-analytics",
+    "cli",
+    "tag-qa",
+    "ci",
+    "playwright"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bonguynvan/beacon-parser.git",
+    "directory": "packages/cli"
+  },
+  "homepage": "https://github.com/bonguynvan/beacon-parser/tree/main/packages/cli#readme",
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@bonv/beacon-parser": "workspace:*",
+    "@bonv/beacon-playwright": "workspace:*",
+    "@bonv/tracking-plan": "workspace:*",
+    "playwright": "^1.48.2"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.48.2",
+    "@types/node": "^22.9.0",
+    "tsup": "^8.3.5",
+    "typescript": "^5.6.3",
+    "vitest": "^2.1.4"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
