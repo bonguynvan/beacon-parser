@@ -13,3 +13,4 @@ playwright/.cache/
 # Private roadmap/idea docs -- intentionally not part of the public repo.
 PLAN.md
 LAB_SPEC.md
+blog/
