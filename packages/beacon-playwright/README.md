@@ -7,6 +7,10 @@ Capture and assert on Adobe Analytics hits (AppMeasurement + Web SDK) in
 Playwright tests. Built on [`@bonv/beacon-parser`](../beacon-parser) — the
 same zero-dependency decoder, wired into a real browser session.
 
+Want to see the decoder before writing a test? Paste a hit URL/body into
+the ["Decode a hit" tab](https://lab.averosi.com/?tab=decode) of the
+[learning lab](https://lab.averosi.com) and see it decoded live.
+
 ## Install
 
 ```bash

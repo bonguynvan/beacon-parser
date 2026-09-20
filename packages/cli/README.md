@@ -10,6 +10,10 @@ browser, and exits non-zero if any flow fails -- the CI entry point for
 outside a test runner via the standalone [`playwright`](https://playwright.dev)
 package.
 
+Want to check what a hit decodes to before wiring up a plan/flow? Paste it
+into the ["Decode a hit" tab](https://lab.averosi.com/?tab=decode) of the
+[learning lab](https://lab.averosi.com).
+
 ## Install
 
 ```bash

@@ -8,7 +8,8 @@ Zero-dependency TypeScript parser that decodes Adobe Analytics network hits
 
 Part of the [beacon-parser toolkit](https://github.com/bonguynvan/beacon-parser)
 ("Omnibug is for looking, this is for testing"). See the
-[lab](https://lab.averosi.com/?tab=decode) to try it without installing
+["Decode a hit" tab](https://lab.averosi.com/?tab=decode) of the
+[learning lab](https://lab.averosi.com) to try it without installing
 anything, and
 [docs/parameters.md](https://github.com/bonguynvan/beacon-parser/blob/main/docs/parameters.md)
 for the full AppMeasurement parameter reference, with an Adobe source cited

@@ -10,6 +10,10 @@ while authoring, no YAML/JSON schema to maintain. Built on
 including [`@bonv/beacon-playwright`](../beacon-playwright)'s
 `captureAdobeHits()`.
 
+Want to see what a hit actually looks like before writing a plan against
+it? Paste one into the ["Decode a hit" tab](https://lab.averosi.com/?tab=decode)
+of the [learning lab](https://lab.averosi.com).
+
 ## Install
 
 ```bash
