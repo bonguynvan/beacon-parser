@@ -1,0 +1,19 @@
+{
+  "name": "codemod-appmeasurement-to-websdk",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Dev-only tool: scans a JS/TS file for AppMeasurement s.tl()/s.t() call sites and inserts a draft Web SDK equivalent as a comment above each one. Consulting aid, not a migration tool -- see README. Not published.",
+  "type": "module",
+  "scripts": {
+    "codemod": "tsx codemod.ts"
+  },
+  "devDependencies": {
+    "@babel/parser": "^7.26.2",
+    "@babel/traverse": "^7.26.4",
+    "@babel/types": "^7.26.3",
+    "@types/babel__traverse": "^7.20.6",
+    "@types/node": "^22.9.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.3"
+  }
+}
