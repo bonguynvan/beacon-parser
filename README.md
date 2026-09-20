@@ -40,6 +40,9 @@ this repo ships ([source](site/)).
 needed: a fake shop with a live hit inspector and three exercises with
 automated checks, so you can learn hit anatomy hands-on ([source](lab/)).
 
+**[averosi.com →](https://averosi.com)** — the toolkit's homepage, one link
+to every package plus the playground and the lab above.
+
 ## beacon-parser vs Omnibug
 
 Different job, not a replacement. Both understand Adobe Analytics hits;

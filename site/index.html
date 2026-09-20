@@ -63,7 +63,13 @@
     display: flex;
     align-items: center;
     gap: 0.75rem;
+    text-decoration: none;
+    color: inherit;
+    border-radius: 8px;
+    transition: opacity 120ms ease;
   }
+
+  .brand:hover { opacity: 0.85; }
 
   .beacon-mark {
     width: 34px;
@@ -308,13 +314,13 @@
 <body>
   <div class="wrap">
     <header class="top">
-      <div class="brand">
+      <a class="brand" href="https://averosi.com" target="_blank" rel="noopener" aria-label="averosi.com — home">
         <div class="beacon-mark" aria-hidden="true"></div>
         <div>
           <h1><code>beacon-parser</code> playground</h1>
           <p class="tagline">Decode an AppMeasurement or Web SDK hit, entirely in your browser.</p>
         </div>
-      </div>
+      </a>
       <nav class="links">
         <a href="https://github.com/bonguynvan/beacon-parser" target="_blank" rel="noopener">GitHub</a>
         <a href="https://github.com/bonguynvan/beacon-parser/blob/main/docs/parameters.md" target="_blank" rel="noopener">Parameter docs</a>

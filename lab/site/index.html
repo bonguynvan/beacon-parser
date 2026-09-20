@@ -85,7 +85,8 @@
     margin-bottom: 2rem;
   }
 
-  .brand { display: flex; align-items: center; gap: 1rem; }
+  .brand { display: flex; align-items: center; gap: 1rem; text-decoration: none; color: inherit; transition: opacity 120ms ease; }
+  .brand:hover { opacity: 0.85; }
 
   .lab-mark-wrap { position: relative; width: 48px; height: 48px; flex-shrink: 0; }
   .lab-mark-glow {
@@ -375,7 +376,7 @@
 
   <div class="wrap">
     <header class="top">
-      <div class="brand">
+      <a class="brand" href="https://averosi.com" target="_blank" rel="noopener" aria-label="averosi.com — home">
         <div class="lab-mark-wrap">
           <div class="lab-mark-glow" aria-hidden="true"></div>
           <img class="lab-mark" src="averosi-mark.png" alt="" aria-hidden="true" width="48" height="48" />
@@ -385,7 +386,7 @@
           <h1><code>beacon-parser</code> lab</h1>
           <p class="tagline">Practice Adobe Analytics implementation with no Adobe account.</p>
         </div>
-      </div>
+      </a>
       <nav class="links">
         <a href="https://github.com/bonguynvan/beacon-parser" target="_blank" rel="noopener">GitHub</a>
         <a href="https://experienceleague.adobe.com/en/docs/analytics" target="_blank" rel="noopener">Adobe Experience League</a>
