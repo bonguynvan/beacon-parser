@@ -115,6 +115,9 @@ importers:
 
   packages/mcp:
     dependencies:
+      '@bonv/beacon-cli':
+        specifier: workspace:*
+        version: link:../cli
       '@bonv/beacon-parser':
         specifier: workspace:*
         version: link:../beacon-parser

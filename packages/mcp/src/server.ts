@@ -5,9 +5,9 @@ import { createServer } from "./create-server.js";
 
 const USAGE = `Usage: beacon-mcp [--root <dir>]
 
-Runs an MCP server over stdio. Tools: parse_hit, explain_hit, diff_hits, validate_hits.
+Runs an MCP server over stdio. Tools: parse_hit, explain_hit, diff_hits, validate_hits, run_flow.
 
-  --root <dir>   Directory tracking-plan files must live inside. Default: the current directory.
+  --root <dir>   Directory tracking-plan and flow-config files must live inside. Default: the current directory.
   --help, -h     Show this message
 `;
 

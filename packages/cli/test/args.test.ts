@@ -19,6 +19,11 @@ describe("parseArgs", () => {
     expect(parseArgs(["--report", "out.html"]).report).toBe("out.html");
   });
 
+  it("parses --block-hits, off by default", () => {
+    expect(parseArgs(["--block-hits"]).blockHits).toBe(true);
+    expect(parseArgs([]).blockHits).toBe(false);
+  });
+
   it("parses --help", () => {
     expect(parseArgs(["--help"]).help).toBe(true);
   });

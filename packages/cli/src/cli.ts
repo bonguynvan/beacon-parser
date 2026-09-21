@@ -20,7 +20,7 @@ async function main(): Promise<void> {
     }
   }
 
-  const results = await runFlows(config, flowNames);
+  const results = await runFlows(config, flowNames, { blockHits: options.blockHits });
   const allPassed = printResults(results);
 
   if (options.report) {

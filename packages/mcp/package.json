@@ -31,6 +31,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@bonv/beacon-cli": "workspace:*",
     "@bonv/beacon-parser": "workspace:*",
     "@bonv/tracking-plan": "workspace:*",
     "@modelcontextprotocol/sdk": "^1.30.0",

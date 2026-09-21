@@ -26,7 +26,8 @@ looking, this is for testing." Five packages so far:
   runs a tracking plan against real flows in a real browser and exits
   non-zero on failure — the CI entry point, no test runner required.
 - [`@bonv/beacon-mcp`](packages/mcp) — an MCP server so AI agents (Claude
-  Code, Cursor, ...) can decode, explain, diff and validate hits locally,
+  Code, Cursor, ...) can decode, explain, diff and validate hits, and run a
+  flow in a real browser, locally,
   with answers that cite the Adobe docs instead of guessing what `v12` means.
 
 Supports both hit generations:

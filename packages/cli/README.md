@@ -71,8 +71,32 @@ invalid -- wire it into CI the same as any other check.
 |---|---|
 | `--config, -c <path>` | Required. Path to a config file exporting `{ baseURL?, plan, flows }`. |
 | `--flow, -f <name>` | Run only this flow. Repeatable. Defaults to every flow in the config. |
+| `--block-hits` | Abort Adobe hits after they're captured, so the page's own tags don't send test traffic into a real report suite. Hits are still observed and validated. |
 | `--report <path>` | Write a static, self-contained HTML report to this path -- readable by a non-technical stakeholder from a link, no server involved. |
 | `--help, -h` | Print usage. |
+
+## Heads up: this sends real hits unless you say otherwise
+
+A flow runs a real browser against a real page, and by default nothing is
+blocked -- the page's own tags send their hits to Adobe exactly as they would
+for a visitor. Against production, that puts test traffic into your report
+suite. Point flows at a staging site or test report suite, or pass
+`--block-hits`: requests are observed first, then aborted, so validation
+works but nothing reaches Adobe. (Aborting a Web SDK request means the page
+never gets a response, which can change what the flow does afterwards.)
+
+## Use it as a library
+
+`loadConfig()` and `runFlows()` are exported for other tools (this is how
+[`@bonv/beacon-mcp`](../mcp)'s `run_flow` works):
+
+```ts
+import { loadConfig, runFlows } from "@bonv/beacon-cli";
+
+const config = await loadConfig("beacon.config.mjs");
+const results = await runFlows(config, ["checkout"], { blockHits: true });
+// results[0] = { name, result: ValidateResult, hits: AdobeHit[] }
+```
 
 ## Why a plain `.mjs` config, not YAML or `.ts`
 

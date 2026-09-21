@@ -111,7 +111,9 @@ one, so a decoder cannot tell you.
 ## Tools that ground you (if installed)
 
 - **`@bonv/beacon-mcp`**: `parse_hit`, `explain_hit` (fields with sources and
-  caveats), `diff_hits`, `validate_hits`. Prefer `explain_hit` to guessing.
+  caveats), `diff_hits`, `validate_hits`, `run_flow` (runs a user-written flow in
+  a real browser and validates the hits; blocks them from reaching Adobe unless
+  told otherwise). Prefer `explain_hit` to guessing.
 - **`@bonv/beacon-parser`** `parseHit()`, `diffAdobeHits()`; **`@bonv/beacon-playwright`**
   matchers; **`@bonv/tracking-plan`** to validate a flow against a plan.
 - Try a hit without installing anything: <https://lab.averosi.com/?tab=decode>.

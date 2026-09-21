@@ -30,9 +30,9 @@ afterEach(async () => {
 });
 
 describe("beacon-mcp over MCP", () => {
-  it("lists exactly the four tools, each with a description", async () => {
+  it("lists exactly the five tools, each with a description", async () => {
     const { tools } = await client.listTools();
-    expect(tools.map((t) => t.name).sort()).toEqual(["diff_hits", "explain_hit", "parse_hit", "validate_hits"]);
+    expect(tools.map((t) => t.name).sort()).toEqual(["diff_hits", "explain_hit", "parse_hit", "run_flow", "validate_hits"]);
     for (const tool of tools) expect(tool.description?.length).toBeGreaterThan(40);
   });
 

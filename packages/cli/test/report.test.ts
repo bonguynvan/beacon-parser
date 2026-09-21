@@ -17,7 +17,7 @@ afterEach(async () => {
 
 describe("writeReport", () => {
   it("writes a PASS badge and no issue list for a passing flow", async () => {
-    const results: FlowResult[] = [{ name: "checkout", result: { passed: true, issues: [], unmatchedHits: [] } }];
+    const results: FlowResult[] = [{ name: "checkout", result: { passed: true, issues: [], unmatchedHits: [] }, hits: [] }];
     const file = path.join(dir, "report.html");
 
     await writeReport(file, results);
@@ -36,7 +36,8 @@ describe("writeReport", () => {
           passed: false,
           issues: [{ eventName: "purchase", kind: "missing-hit", message: '"purchase": expected at least one matching hit, but none fired' }],
           unmatchedHits: []
-        }
+        },
+        hits: []
       }
     ];
     const file = path.join(dir, "report.html");
@@ -53,7 +54,8 @@ describe("writeReport", () => {
     const results: FlowResult[] = [
       {
         name: "<script>alert(1)</script>",
-        result: { passed: false, issues: [{ eventName: "x", kind: "missing-hit", message: "<b>bold</b>" }], unmatchedHits: [] }
+        result: { passed: false, issues: [{ eventName: "x", kind: "missing-hit", message: "<b>bold</b>" }], unmatchedHits: [] },
+        hits: []
       }
     ];
     const file = path.join(dir, "report.html");

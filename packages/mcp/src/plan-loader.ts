@@ -6,31 +6,37 @@ import type { TrackingPlan } from "@bonv/tracking-plan";
 const ALLOWED_EXTENSIONS = new Set([".mjs", ".js"]);
 
 /**
- * Loads a tracking plan module (default export, built with definePlan()).
+ * Resolves a file the calling agent named to an absolute path, refusing
+ * anything that isn't a .mjs/.js file inside `root` (symlinks followed).
  *
- * A plan contains `match` functions, so loading one executes a local file the
- * calling agent named. To keep that from being an arbitrary-file-execution
- * primitive, the path must resolve (symlinks followed) to a .mjs/.js file
- * inside `root`, which the user sets when starting the server.
+ * Tracking plans and flow configs are code -- loading one executes a local
+ * file the agent chose -- so this is what keeps a tool call from being an
+ * arbitrary-file-execution primitive. `label` names the argument in errors.
  */
-export async function loadPlan(planFile: string, root: string): Promise<TrackingPlan> {
-  if (!ALLOWED_EXTENSIONS.has(path.extname(planFile))) {
-    throw new Error(`planFile must be a .mjs or .js file, got "${planFile}"`);
+export async function resolveInsideRoot(file: string, root: string, label = "planFile"): Promise<string> {
+  if (!ALLOWED_EXTENSIONS.has(path.extname(file))) {
+    throw new Error(`${label} must be a .mjs or .js file, got "${file}"`);
   }
 
   const realRoot = await realpath(root);
   let resolved: string;
   try {
-    resolved = await realpath(path.resolve(realRoot, planFile));
+    resolved = await realpath(path.resolve(realRoot, file));
   } catch {
-    throw new Error(`planFile "${planFile}" was not found under ${realRoot}`);
+    throw new Error(`${label} "${file}" was not found under ${realRoot}`);
   }
 
   const relative = path.relative(realRoot, resolved);
   if (relative.startsWith("..") || path.isAbsolute(relative)) {
-    throw new Error(`planFile must be inside ${realRoot} (restart the server with --root to change this)`);
+    throw new Error(`${label} must be inside ${realRoot} (restart the server with --root to change this)`);
   }
 
+  return resolved;
+}
+
+/** Loads a tracking plan module (default export, built with definePlan()). */
+export async function loadPlan(planFile: string, root: string): Promise<TrackingPlan> {
+  const resolved = await resolveInsideRoot(planFile, root);
   const mod: unknown = await import(pathToFileURL(resolved).href);
   return assertPlan((mod as { default?: unknown }).default, planFile);
 }

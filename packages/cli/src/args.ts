@@ -2,11 +2,12 @@ export interface CliOptions {
   config?: string;
   flows: string[];
   report?: string;
+  blockHits: boolean;
   help: boolean;
 }
 
 export function parseArgs(args: string[]): CliOptions {
-  const options: CliOptions = { flows: [], help: false };
+  const options: CliOptions = { flows: [], blockHits: false, help: false };
 
   for (let i = 0; i < args.length; i++) {
     const arg = args[i];
@@ -21,6 +22,9 @@ export function parseArgs(args: string[]): CliOptions {
         break;
       case "--report":
         options.report = nextArg(args, ++i, arg);
+        break;
+      case "--block-hits":
+        options.blockHits = true;
         break;
       case "--help":
       case "-h":
@@ -40,10 +44,11 @@ function nextArg(args: string[], index: number, flag: string): string {
   return value;
 }
 
-export const USAGE = `Usage: beacon-qa --config <path> [--flow <name>]... [--report <path>]
+export const USAGE = `Usage: beacon-qa --config <path> [--flow <name>]... [--report <path>] [--block-hits]
 
   --config, -c   Path to a beacon.config.mjs exporting { baseURL?, plan, flows }
   --flow, -f     Run only this flow (repeatable). Default: run every flow in the config
   --report       Write a static HTML report to this path
+  --block-hits   Abort Adobe hits after capturing them, so the page's tags don't send test traffic to a real report suite
   --help, -h     Show this message
 `;

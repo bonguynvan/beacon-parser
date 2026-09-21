@@ -5,6 +5,8 @@ import {
   explainHitTool,
   hitFields,
   parseHitTool,
+  runFlowFields,
+  runFlowTool,
   validateHitsFields,
   validateHitsTool
 } from "./tools.js";
@@ -71,6 +73,19 @@ export function createServer({ root, version }: ServerOptions): McpServer {
       annotations: { idempotentHint: true, openWorldHint: false }
     },
     (args) => validateHitsTool(args, root)
+  );
+
+  server.registerTool(
+    "run_flow",
+    {
+      title: "Run a flow in a real browser and validate the hits it fires",
+      description:
+        "Run named flows from a beacon.config.mjs (inside the server's root directory) in a real headless Chromium, capture the Adobe Analytics hits each flow fires, and validate them against the config's tracking plan. Returns pass/fail with structured issues plus the captured hits. You choose flow names; the flows themselves are code the user wrote -- you cannot supply URLs or code. By default the hits are captured and then BLOCKED so test traffic never reaches a real report suite (set sendHits to allow it, only against a test/staging report suite). Needs Chromium installed (`npx playwright install chromium`)." +
+        PRIVACY,
+      inputSchema: runFlowFields,
+      annotations: { openWorldHint: true }
+    },
+    (args) => runFlowTool(args, root)
   );
 
   return server;

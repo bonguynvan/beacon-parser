@@ -18,7 +18,7 @@ Notes for assistants:
 - [@bonv/beacon-playwright](https://raw.githubusercontent.com/bonguynvan/beacon-parser/main/packages/beacon-playwright/README.md): capture hits in Playwright tests, matchers such as toHaveAdobeEvent
 - [@bonv/tracking-plan](https://raw.githubusercontent.com/bonguynvan/beacon-parser/main/packages/tracking-plan/README.md): tracking plan as a typed object, validate captured hits
 - [@bonv/beacon-cli](https://raw.githubusercontent.com/bonguynvan/beacon-parser/main/packages/cli/README.md): run a plan against real flows in CI
-- [@bonv/beacon-mcp](https://raw.githubusercontent.com/bonguynvan/beacon-parser/main/packages/mcp/README.md): MCP server exposing parse_hit, explain_hit, diff_hits, validate_hits
+- [@bonv/beacon-mcp](https://raw.githubusercontent.com/bonguynvan/beacon-parser/main/packages/mcp/README.md): MCP server exposing parse_hit, explain_hit, diff_hits, validate_hits, run_flow
 
 ## Try it
 - [Lab and decoder](https://lab.averosi.com/?tab=decode): paste a hit and see it decoded in the browser; a fake shop and three exercises for practice, no Adobe account needed
