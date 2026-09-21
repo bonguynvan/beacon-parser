@@ -9,7 +9,7 @@
 > respective owners.
 
 Open-source TypeScript toolkit for Adobe Analytics tag QA — "Omnibug is for
-looking, this is for testing." Four packages so far:
+looking, this is for testing." Five packages so far:
 
 - [`@bonv/beacon-parser`](packages/beacon-parser) — zero-dependency parser
   that decodes Adobe Analytics network hits into clean, normalized JSON.
@@ -25,6 +25,9 @@ looking, this is for testing." Four packages so far:
 - [`@bonv/beacon-cli`](packages/cli) — `npx beacon-qa --config beacon.config.mjs`
   runs a tracking plan against real flows in a real browser and exits
   non-zero on failure — the CI entry point, no test runner required.
+- [`@bonv/beacon-mcp`](packages/mcp) — an MCP server so AI agents (Claude
+  Code, Cursor, ...) can decode, explain, diff and validate hits locally,
+  with answers that cite the Adobe docs instead of guessing what `v12` means.
 
 Supports both hit generations:
 

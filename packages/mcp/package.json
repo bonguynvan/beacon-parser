@@ -1,0 +1,48 @@
+{
+  "name": "@bonv/beacon-mcp",
+  "version": "0.1.0",
+  "description": "MCP server that lets AI agents decode, explain, diff and validate Adobe Analytics hits (AppMeasurement + Web SDK) locally, over stdio.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "bin": {
+    "beacon-mcp": "./dist/server.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "adobe-analytics",
+    "tag-qa",
+    "ai-agents"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bonguynvan/beacon-parser.git",
+    "directory": "packages/mcp"
+  },
+  "homepage": "https://github.com/bonguynvan/beacon-parser/tree/main/packages/mcp#readme",
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@bonv/beacon-parser": "workspace:*",
+    "@bonv/tracking-plan": "workspace:*",
+    "@modelcontextprotocol/sdk": "^1.30.0",
+    "zod": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.9.0",
+    "tsup": "^8.3.5",
+    "typescript": "^5.6.3",
+    "vitest": "^2.1.4"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
