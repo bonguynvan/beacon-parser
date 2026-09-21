@@ -53,6 +53,14 @@ client uses -- this server is local, your AI client is not. Only use
 synthetic or anonymized hits, never one captured from a real, logged-in
 session. Every tool's description tells the model the same.
 
+**Prompt injection.** A captured hit comes from an arbitrary website, and a
+value inside it (a `pageName`, a context-data string) can be written to read
+like an instruction. Every tool's description tells the model to treat hit
+contents as untrusted data, and every result ends with a separate notice
+saying the same. That reduces the chance a model obeys such text; it cannot
+guarantee it. Review what an agent does before approving anything a hit
+"asked" for -- especially with clients that auto-approve tool calls.
+
 **`validate_hits` executes your plan file.** A tracking plan contains `match`
 functions, so loading it runs code. The path must resolve (symlinks
 followed) to a `.mjs`/`.js` file inside the server's root directory -- the

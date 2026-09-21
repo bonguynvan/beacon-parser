@@ -43,6 +43,12 @@ this repo ships.
 needed: a fake shop with a live hit inspector and three exercises with
 automated checks, so you can learn hit anatomy hands-on ([source](lab/)).
 
+**For AI assistants:** [`skills/adobe-analytics-hits`](skills/adobe-analytics-hits/SKILL.md)
+is a drop-in skill (also fine to paste into an `AGENTS.md`) with a verified,
+sourced parameter reference and the common mistakes, so an assistant stops
+guessing what `v12` or `pev2` means. [`llms.txt`](https://lab.averosi.com/llms.txt)
+indexes the docs for crawlers and agents.
+
 **[averosi.com →](https://averosi.com)** — the toolkit's homepage, one link
 to every package plus the lab above.
 
