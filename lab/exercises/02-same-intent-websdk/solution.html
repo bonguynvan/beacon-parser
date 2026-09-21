@@ -19,12 +19,11 @@
                   // via pev2 (the link name) -- there's no separate
                   // "link name" field in Web SDK, the event id does that job.
                   events: ["download-brochure"],
-                  // There's no numbered eVar on the wire in Web SDK -- that
-                  // mapping happens server-side, in the datastream config.
-                  // What you control here is a descriptive key under
-                  // contextData; a real implementation would map this to
-                  // an eVar via the Analytics extension/datastream setup,
-                  // not from the client.
+                  // Web SDK can also set a numbered eVar directly here
+                  // (eVar5: "..."), Adobe's recommended path. This exercise
+                  // uses the other common approach: a descriptive key under
+                  // contextData, which the datastream config maps to an eVar
+                  // server-side -- nothing on the wire says which one.
                   contextData: { "asset.name": "whitepaper-2024" }
                 }
               }

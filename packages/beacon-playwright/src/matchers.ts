@@ -1,4 +1,4 @@
-import { pageNameOf, eventIdsOf } from "@bonv/beacon-parser";
+import { pageNameOf, eventIdsOf, evarsOf, propsOf } from "@bonv/beacon-parser";
 import type { AdobeHit } from "@bonv/beacon-parser";
 
 type Hit = AdobeHit;
@@ -52,36 +52,33 @@ export const adobeMatchers = {
   },
 
   /**
-   * Asserts at least one AppMeasurement hit has the given eVar value.
-   * Always fails to match on Web SDK hits -- there's no numbered eVar on
-   * the wire there; that mapping happens server-side, in the datastream.
+   * Asserts at least one captured hit has the given eVar value: an
+   * AppMeasurement `eVars` entry, or a Web SDK `data.__adobe.analytics.eVarN`.
+   * A Web SDK hit that sets the eVar via XDM or context data instead is
+   * mapped server-side (in the datastream) and can't match here.
    */
   toHaveEvar(hits: Hit[], index: number, expected: string): MatcherResult {
-    const pass = hits.some(
-      (hit) => hit.kind === "appmeasurement" && hit.eVars[String(index)] === expected
-    );
+    const pass = hits.some((hit) => evarsOf(hit)[String(index)] === expected);
 
     return {
       pass,
       message: () =>
         pass
-          ? `Expected no AppMeasurement hit to have eVar${index}="${expected}", but found one.`
-          : `Expected an AppMeasurement hit with eVar${index}="${expected}". ${describeHits(hits)}`
+          ? `Expected no hit to have eVar${index}="${expected}", but found one.`
+          : `Expected a hit with eVar${index}="${expected}". ${describeHits(hits)}`
     };
   },
 
-  /** Asserts at least one AppMeasurement hit has the given prop value. Web SDK hits never match (see toHaveEvar). */
+  /** Asserts at least one captured hit has the given prop value. Same coverage as toHaveEvar. */
   toHaveProp(hits: Hit[], index: number, expected: string): MatcherResult {
-    const pass = hits.some(
-      (hit) => hit.kind === "appmeasurement" && hit.props[String(index)] === expected
-    );
+    const pass = hits.some((hit) => propsOf(hit)[String(index)] === expected);
 
     return {
       pass,
       message: () =>
         pass
-          ? `Expected no AppMeasurement hit to have prop${index}="${expected}", but found one.`
-          : `Expected an AppMeasurement hit with prop${index}="${expected}". ${describeHits(hits)}`
+          ? `Expected no hit to have prop${index}="${expected}", but found one.`
+          : `Expected a hit with prop${index}="${expected}". ${describeHits(hits)}`
     };
   }
 };

@@ -60,10 +60,23 @@ test("toHaveProp matches an AppMeasurement prop", () => {
   expect([amHit()]).toHaveProp(3, "checkout-flow");
 });
 
-test("toHaveEvar never matches a Web SDK hit", () => {
-  expect([sdkHit()]).not.toHaveEvar(12, "checkout");
+const sdkWithNumberedVars = sdkHit({
+  events: [
+    { xdm: {}, analytics: { eVars: { "12": "checkout" }, props: { "3": "checkout-flow" } } }
+  ]
 });
 
-test("toHaveProp never matches a Web SDK hit", () => {
-  expect([sdkHit()]).not.toHaveProp(3, "checkout-flow");
+test("toHaveEvar matches a Web SDK data.__adobe.analytics eVar", () => {
+  expect([sdkWithNumberedVars]).toHaveEvar(12, "checkout");
+});
+
+test("toHaveProp matches a Web SDK data.__adobe.analytics prop", () => {
+  expect([sdkWithNumberedVars]).toHaveProp(3, "checkout-flow");
+});
+
+test("toHaveEvar doesn't match a Web SDK hit that only sets the value via contextData", () => {
+  const viaContextData = sdkHit({
+    events: [{ xdm: {}, analytics: { contextData: { eVar12: "checkout" } } }]
+  });
+  expect([viaContextData]).not.toHaveEvar(12, "checkout");
 });

@@ -34,6 +34,32 @@ Path segments (`/b/ss/{rsid}/{version}/{code}`):
 | `version` | `version` | same as above |
 | request type (`ss`) | `requestType` | same as above |
 
+## Web SDK: `data.__adobe.analytics` keys
+
+Adobe's recommended way to set Analytics variables with the Web SDK is the
+`data.__adobe.analytics` object (no XDM schema needed). The parser lifts
+these documented keys into typed fields on `hit.events[].analytics`; every
+other key is preserved untouched. Long form and shorthand are both read.
+
+| Key (long / shorthand) | Output field |
+|---|---|
+| `eVar1`-`eVar250` / `v1`-`v250` | `eVars["1"]`-`eVars["250"]` |
+| `prop1`-`prop75` / `c1`-`c75` | `props["1"]`-`props["75"]` |
+| `events` (events-variable string, e.g. `"event1,event2=5"`; an array is also read) | `events` (token array; `eventIdsOf()` gives bare ids) |
+| `pageURL` / `g` | `pageURL` |
+| `linkName` / `pev2`, `linkURL` / `pev1`, `linkType` / `pe` (`o`, `d`, `e`) | `linkName`, `linkURL`, `linkType` |
+| `pageName`, `contextData` | `pageName`, `contextData` |
+| `products` (AppMeasurement syntax) | left raw -- `TODO: parse`, not yet modeled |
+
+Source: [data object field mapping](https://experienceleague.adobe.com/en/docs/analytics/implementation/aep-edge/data-var-mapping)
+
+Not documented by Adobe, so `TODO: verify`: precedence when both a long form
+and its shorthand are sent (the parser lets the long form win), and whether
+`events` as an array is officially supported or merely tolerated (both are
+read). Indexes outside 1-250 / 1-75 are not lifted. A Web SDK eVar set via
+XDM or `contextData` instead is mapped server-side (datastream config) --
+nothing on the wire says which eVar it lands in, so it can't be decoded.
+
 ## Products sub-format
 
 Each entry in the comma-separated `products` list is `;`-delimited:

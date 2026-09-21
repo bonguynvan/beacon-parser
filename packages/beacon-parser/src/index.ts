@@ -1,6 +1,6 @@
 export { parseHit } from "./parse-hit.js";
 export { detectHitType } from "./detect.js";
-export { pageNameOf, eventIdsOf, contextDataOf } from "./hit-utils.js";
+export { pageNameOf, eventIdsOf, contextDataOf, evarsOf, propsOf } from "./hit-utils.js";
 export { diffAdobeHits } from "./diff.js";
 
 export type {

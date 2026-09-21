@@ -1,0 +1,24 @@
+{
+  "url": "https://edge.adobedc.net/ee/v1/interact?configId=fake-datastream-id-2222&requestId=req-0008",
+  "method": "POST",
+  "bodyJson": {
+    "events": [
+      {
+        "xdm": { "eventType": "web.webinteraction.linkClicks" },
+        "data": {
+          "__adobe": {
+            "analytics": {
+              "g": "https://www.example.com/cart",
+              "v5": "cart",
+              "c7": "promo",
+              "pe": "d",
+              "pev1": "https://www.example.com/files/brochure.pdf",
+              "pev2": "download-brochure",
+              "events": ["event2", "event3=4"]
+            }
+          }
+        }
+      }
+    ]
+  }
+}

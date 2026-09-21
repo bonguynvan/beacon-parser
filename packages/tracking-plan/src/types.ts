@@ -14,9 +14,9 @@ export interface EventPlan {
   name: string;
   /** Recognizes which captured hits are an instance of this event. */
   match: (hit: AdobeHit) => boolean;
-  /** eVars keyed by numeric suffix ("1".."250"). Only checked on AppMeasurement hits. */
+  /** eVars keyed by numeric suffix ("1".."250"). Checked on AppMeasurement eVars and Web SDK data.__adobe.analytics.eVarN. */
   eVars?: Record<string, FieldRule>;
-  /** Props keyed by numeric suffix ("1".."75"). Only checked on AppMeasurement hits. */
+  /** Props keyed by numeric suffix ("1".."75"). Same coverage as eVars. */
   props?: Record<string, FieldRule>;
   /** Adobe event ids (e.g. "event1", "purchase") that must be present on every matching hit. */
   events?: string[];

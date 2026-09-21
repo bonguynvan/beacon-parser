@@ -11,12 +11,14 @@ Open `starter.html` and edit the inline script directly.
 The Analytics-specific part of a Web SDK event lives at
 `data.__adobe.analytics`, not in `xdm` directly -- `xdm` carries the
 generic Experience Platform event, `__adobe.analytics` is what an
-Analytics-configured datastream actually reads. There's no numbered eVar on
-the wire here (that mapping happens server-side, in the datastream
-config) -- what you control client-side is `pageName`, `events`, and
-whatever descriptive keys you put in `contextData`.
+Analytics-configured datastream actually reads. Web SDK can set a numbered
+eVar directly there (`data.__adobe.analytics.eVar5`), but this exercise uses
+the other common approach: descriptive keys in `contextData`, which the
+datastream maps to an eVar server-side (nothing on the wire says which one).
+So what you control here is `pageName`, `events`, and your `contextData` keys.
 
-Source: [events overview](https://experienceleague.adobe.com/en/docs/analytics/implementation/vars/page-vars/events/events-overview)
+Sources: [events overview](https://experienceleague.adobe.com/en/docs/analytics/implementation/vars/page-vars/events/events-overview),
+[data object field mapping](https://experienceleague.adobe.com/en/docs/analytics/implementation/aep-edge/data-var-mapping)
 
 ## Check your answer
 

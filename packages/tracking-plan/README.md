@@ -58,8 +58,8 @@ matching hit with a field problem.
 interface EventPlan {
   name: string;
   match: (hit: AdobeHit) => boolean;
-  eVars?: Record<string, FieldRule>;       // keyed "1".."250", AppMeasurement hits only
-  props?: Record<string, FieldRule>;       // keyed "1".."75", AppMeasurement hits only
+  eVars?: Record<string, FieldRule>;       // keyed "1".."250"
+  props?: Record<string, FieldRule>;       // keyed "1".."75"
   events?: string[];                       // required Adobe event ids
   contextData?: Record<string, FieldRule>; // dot-path keys, checked on both generations
 }
@@ -71,13 +71,13 @@ interface FieldRule {
 }
 ```
 
-`eVars`/`props` rules only run against AppMeasurement hits — Web SDK carries
-no numbered eVar/prop on the wire (that mapping is server-side, in the
-datastream config), the same generation split
-[`diffAdobeHits()`](../beacon-parser#diffing-two-hit-sets-migration-parity)
-uses. `contextData` rules run on both: AppMeasurement's top-level
-`contextData` and Web SDK's `__adobe.analytics.contextData`, merged across
-every event in the hit.
+`eVars`/`props` rules run against both generations: AppMeasurement's
+`eVars`/`props`, and Web SDK's `data.__adobe.analytics.eVarN`/`propN`. A Web
+SDK eVar set through XDM or `contextData` instead is mapped server-side (in
+the datastream config), so an `eVars` rule for it reports `missing-field` —
+write a `contextData` rule for that key. `contextData` rules run on both
+generations: AppMeasurement's top-level `contextData` and Web SDK's
+`__adobe.analytics.contextData`, merged across every event in the hit.
 
 Pass `{ strict: true }` to also flag any captured hit that matched no
 `EventPlan` at all, useful for catching an unexpected extra hit a flow

@@ -135,7 +135,7 @@ describe("diffAdobeHits", () => {
     ]);
   });
 
-  it("flags kindChanged for an AppMeasurement -> Web SDK pair and skips eVar/prop diffing", () => {
+  it("flags kindChanged for an AppMeasurement -> Web SDK pair and reports eVars missing on the Web SDK side", () => {
     const before = [amHit({ pageName: "checkout", eVars: { "12": "checkout" } })];
     const after = [sdkHit()];
 
@@ -144,7 +144,34 @@ describe("diffAdobeHits", () => {
     expect(diff.entries[0]?.kindChanged).toBe(true);
     expect(diff.entries[0]?.missingEvents).toEqual([]);
     expect(diff.entries[0]?.addedEvents).toEqual([]);
-    expect(diff.changedEvars).toEqual([]);
+    expect(diff.changedEvars).toEqual([
+      { index: "12", before: "checkout", after: "", pageName: "checkout" }
+    ]);
+    expect(diff.changedProps).toEqual([]);
+  });
+
+  it("compares eVars/props across generations when the Web SDK sends them in data.__adobe.analytics", () => {
+    const before = [amHit({ pageName: "checkout", eVars: { "12": "checkout" }, props: { "3": "flow" } })];
+    const after = [
+      sdkHit({
+        events: [
+          {
+            xdm: {},
+            analytics: {
+              pageName: "checkout",
+              events: ["event5"],
+              eVars: { "12": "checkout-v2" },
+              props: { "3": "flow" }
+            }
+          }
+        ]
+      })
+    ];
+
+    const diff = diffAdobeHits(before, after);
+    expect(diff.changedEvars).toEqual([
+      { index: "12", before: "checkout", after: "checkout-v2", pageName: "checkout" }
+    ]);
     expect(diff.changedProps).toEqual([]);
   });
 

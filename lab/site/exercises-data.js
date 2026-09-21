@@ -18,9 +18,10 @@ export const EXERCISES = [
       "AppMeasurement version. Teaches the relationship between XDM and " +
       "data.__adobe.analytics.",
     hint:
-      "There's no numbered eVar/prop in Web SDK -- that mapping is server-side, in the " +
-      "datastream config. What you control client-side is the XDM eventType and whatever " +
-      "you put in data.__adobe.analytics.contextData.",
+      "Web SDK can set a numbered eVar directly (data.__adobe.analytics.eVar5), but here " +
+      "use the other common approach: descriptive keys in data.__adobe.analytics.contextData, " +
+      "which the datastream maps to an eVar server-side. You control the XDM eventType, " +
+      "pageName, events, and your contextData keys.",
     path: "lab/exercises/02-same-intent-websdk"
   },
   {

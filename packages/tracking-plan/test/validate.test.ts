@@ -154,19 +154,43 @@ describe("validate", () => {
     ]);
   });
 
-  it("skips eVar/prop rules for Web SDK hits (no numbered fields on the wire)", () => {
+  it("checks eVar/prop rules against Web SDK data.__adobe.analytics values", () => {
     const plan = definePlan({
       name: "checkout flow",
       events: [
         {
           name: "purchase",
           match: (hit) => hit.kind === "websdk",
-          eVars: { "12": {} }
+          eVars: { "12": { oneOf: ["checkout"] } },
+          props: { "3": {} }
         }
       ]
     });
 
-    expect(validate([sdkHit()], plan).passed).toBe(true);
+    const ok = sdkHit({
+      events: [{ xdm: {}, analytics: { eVars: { "12": "checkout" }, props: { "3": "flow" } } }]
+    });
+    const wrong = sdkHit({
+      events: [{ xdm: {}, analytics: { eVars: { "12": "other" } } }]
+    });
+
+    expect(validate([ok], plan).passed).toBe(true);
+
+    const result = validate([wrong], plan);
+    expect(result.passed).toBe(false);
+    expect(result.issues.map((issue) => [issue.kind, issue.field])).toEqual([
+      ["unexpected-value", "eVar 12"],
+      ["missing-field", "prop 3"]
+    ]);
+  });
+
+  it("reports missing-field for a required eVar a Web SDK hit doesn't set in the data object", () => {
+    const plan = definePlan({
+      name: "checkout flow",
+      events: [{ name: "purchase", match: (hit) => hit.kind === "websdk", eVars: { "12": {} } }]
+    });
+
+    expect(validate([sdkHit()], plan).issues[0]).toMatchObject({ kind: "missing-field", field: "eVar 12" });
   });
 
   it("checks contextData on both hit generations via a dot-path key", () => {

@@ -1,0 +1,66 @@
+{
+  "kind": "websdk",
+  "endpoint": "interact",
+  "datastreamId": "fake-datastream-id-2222",
+  "events": [
+    {
+      "xdm": { "eventType": "web.webinteraction.linkClicks" },
+      "data": {
+        "__adobe": {
+          "analytics": {
+            "pageName": "checkout",
+            "pageURL": "https://www.example.com/checkout",
+            "events": "event1,event5=2.5",
+            "eVar12": "checkout-step-2",
+            "prop3": "checkout-flow",
+            "eVar999": "out-of-range",
+            "linkName": "place-order",
+            "linkURL": "https://www.example.com/order",
+            "linkType": "o",
+            "contextData": { "a.step": "2" }
+          }
+        }
+      },
+      "analytics": {
+        "pageName": "checkout",
+        "pageURL": "https://www.example.com/checkout",
+        "events": ["event1", "event5=2.5"],
+        "eVars": { "12": "checkout-step-2" },
+        "props": { "3": "checkout-flow" },
+        "eVar12": "checkout-step-2",
+        "prop3": "checkout-flow",
+        "eVar999": "out-of-range",
+        "linkName": "place-order",
+        "linkURL": "https://www.example.com/order",
+        "linkType": "o",
+        "contextData": { "a.step": "2" }
+      }
+    }
+  ],
+  "raw": {
+    "events": [
+      {
+        "xdm": { "eventType": "web.webinteraction.linkClicks" },
+        "data": {
+          "__adobe": {
+            "analytics": {
+              "pageName": "checkout",
+              "pageURL": "https://www.example.com/checkout",
+              "events": "event1,event5=2.5",
+              "eVar12": "checkout-step-2",
+              "prop3": "checkout-flow",
+              "eVar999": "out-of-range",
+              "linkName": "place-order",
+              "linkURL": "https://www.example.com/order",
+              "linkType": "o",
+              "contextData": { "a.step": "2" }
+            }
+          }
+        }
+      }
+    ]
+  },
+  "unknown": {
+    "requestId": "req-0007"
+  }
+}

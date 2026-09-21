@@ -56,8 +56,10 @@ generations (AppMeasurement -> Web SDK): run the same user flow against both
 implementations, capture both hit sets, and see exactly what changed instead
 of eyeballing two debugger sessions side by side. Matching is by `pageName`
 then position within each page — best-effort, not exact; see the full repo
-README for the matching strategy. eVar/prop comparison only happens between
-two AppMeasurement hits — Web SDK carries no numbered eVar/prop on the wire.
+README for the matching strategy. eVar/prop comparison covers AppMeasurement
+`eVars`/`props` and Web SDK `data.__adobe.analytics.eVarN`/`propN`, so it works
+across a migration; a Web SDK eVar set via XDM or context data is mapped
+server-side and can't be compared.
 
 ## Limitations
 

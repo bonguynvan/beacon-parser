@@ -70,9 +70,9 @@ const expect = baseExpect.extend(adobeMatchers);
 | Matcher | Checks |
 |---|---|
 | `toHaveAdobeHit({ kind?, pageName? })` | At least one hit matches the given kind and/or page name |
-| `toHaveAdobeEvent(eventId)` | At least one hit fired the given event (AppMeasurement `events[].id` or Web SDK `__adobe.analytics.events[]`) |
-| `toHaveEvar(index, expected)` | At least one **AppMeasurement** hit has that eVar value |
-| `toHaveProp(index, expected)` | At least one **AppMeasurement** hit has that prop value |
+| `toHaveAdobeEvent(eventId)` | At least one hit fired the given event (AppMeasurement `events[].id` or Web SDK `__adobe.analytics.events`) |
+| `toHaveEvar(index, expected)` | At least one hit has that eVar value (AppMeasurement `eVars`, or Web SDK `data.__adobe.analytics.eVarN`) |
+| `toHaveProp(index, expected)` | At least one hit has that prop value (same coverage) |
 
 ## Migration parity diffing
 
@@ -87,10 +87,14 @@ const after = await captureAdobeHits(newPage, flow);
 const diff = diffAdobeHits(before, after);
 ```
 
-`toHaveEvar`/`toHaveProp` only ever match AppMeasurement hits. Web SDK
-doesn't carry numbered eVars/props on the wire — that mapping happens
-server-side, in the datastream configuration — so there's nothing on a
-captured Web SDK hit for these to check.
+`toHaveEvar`/`toHaveProp` match an AppMeasurement hit's `eVars`/`props` and a
+Web SDK hit's `data.__adobe.analytics.eVarN`/`propN` (Adobe's [recommended
+way](https://experienceleague.adobe.com/en/docs/analytics/implementation/aep-edge/data-var-mapping)
+to set them; the `vN`/`cN` shorthands work too). A Web SDK implementation
+that sets a value through XDM or `contextData` instead is mapped to an eVar
+server-side, in the datastream configuration — nothing on the wire says
+which eVar it lands in, so these matchers can't see it. Assert on the
+`contextData` key with a [tracking plan](../tracking-plan) rule instead.
 
 Every matcher's failure message includes the full list of captured hits as
 JSON, so a failing assertion shows you what actually fired instead of just

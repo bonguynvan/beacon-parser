@@ -97,9 +97,33 @@ export interface AppMeasurementHit {
 
 // ---- Web SDK (Alloy) ----
 
+/**
+ * The `data.__adobe.analytics` object -- Adobe's recommended way to set
+ * Analytics variables with the Web SDK. Only the documented keys below are
+ * lifted into typed fields; every other key is preserved untouched via the
+ * index signature. Source (key names, shorthands):
+ * https://experienceleague.adobe.com/en/docs/analytics/implementation/aep-edge/data-var-mapping
+ */
 export interface WebSdkAnalyticsBlock {
   pageName?: string;
+  /** `pageURL` or shorthand `g`. */
+  pageURL?: string;
+  /**
+   * Event tokens as sent, e.g. ["event1", "event2=5"]. Accepts either an
+   * array or the events-variable string form ("event1,event2=5") on the
+   * wire. Use eventIdsOf() for bare ids.
+   */
   events?: string[];
+  /** `eVar1`-`eVar250` or shorthand `v1`-`v250`, keyed by numeric suffix ("1".."250"). */
+  eVars?: Record<string, string>;
+  /** `prop1`-`prop75` or shorthand `c1`-`c75`, keyed by numeric suffix ("1".."75"). */
+  props?: Record<string, string>;
+  /** `linkName` or shorthand `pev2`. */
+  linkName?: string;
+  /** `linkURL` or shorthand `pev1`. */
+  linkURL?: string;
+  /** `linkType` or shorthand `pe`; documented values o (custom), d (download), e (exit). */
+  linkType?: "o" | "d" | "e";
   contextData?: Record<string, unknown>;
   [key: string]: unknown;
 }
@@ -165,13 +189,13 @@ export interface HitDiffEntry {
   /** Event ids present in `after` but not `before`. */
   addedEvents: string[];
   /**
-   * eVar value changes, only computed when both sides are AppMeasurement --
-   * Web SDK carries no numbered eVar on the wire (that mapping is
-   * server-side, in the datastream config), so a kind-changed pair never
-   * populates this.
+   * eVar value changes. Compares AppMeasurement `eVars` and Web SDK
+   * `data.__adobe.analytics.eVarN` alike, so it works across a migration
+   * (kindChanged pairs). eVars a Web SDK implementation sets via XDM or
+   * context data instead are mapped server-side and are invisible here.
    */
   changedEvars: ChangedValue[];
-  /** Prop value changes. Same AppMeasurement-only caveat as changedEvars. */
+  /** Prop value changes. Same coverage as changedEvars. */
   changedProps: ChangedValue[];
 }
 

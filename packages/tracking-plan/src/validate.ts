@@ -1,4 +1,4 @@
-import { contextDataOf, eventIdsOf, type AdobeHit } from "@bonv/beacon-parser";
+import { contextDataOf, eventIdsOf, evarsOf, propsOf, type AdobeHit } from "@bonv/beacon-parser";
 import { checkField } from "./field-rules.js";
 import type { EventPlan, FieldRule, PlanIssue, TrackingPlan, ValidateOptions, ValidateResult } from "./types.js";
 
@@ -9,10 +9,11 @@ import type { EventPlan, FieldRule, PlanIssue, TrackingPlan, ValidateOptions, Va
  * hits is reported as `missing-hit`, distinct from a matching hit with a
  * field problem (`missing-field` / `unexpected-value`).
  *
- * `eVars`/`props` rules are only checked on AppMeasurement hits (Web SDK
- * carries no numbered eVar/prop on the wire -- that mapping is server-side,
- * in the datastream config), matching the same generation split
- * `diffAdobeHits` uses.
+ * `eVars`/`props` rules apply to both hit generations: AppMeasurement's
+ * `eVars`/`props`, and Web SDK's `data.__adobe.analytics.eVarN`/`propN`.
+ * A Web SDK eVar sent via XDM or context data instead is mapped
+ * server-side (datastream config) and invisible here -- a required rule
+ * for it reports `missing-field`; use a `contextData` rule for that path.
  */
 export function validate(hits: AdobeHit[], plan: TrackingPlan, options: ValidateOptions = {}): ValidateResult {
   const issues: PlanIssue[] = [];
@@ -66,10 +67,8 @@ function checkHit(hit: AdobeHit, eventPlan: EventPlan): PlanIssue[] {
     }
   }
 
-  if (hit.kind === "appmeasurement") {
-    issues.push(...checkFieldMap(eventPlan.name, eventPlan.eVars, hit.eVars, "eVar"));
-    issues.push(...checkFieldMap(eventPlan.name, eventPlan.props, hit.props, "prop"));
-  }
+  issues.push(...checkFieldMap(eventPlan.name, eventPlan.eVars, evarsOf(hit), "eVar"));
+  issues.push(...checkFieldMap(eventPlan.name, eventPlan.props, propsOf(hit), "prop"));
 
   if (eventPlan.contextData) {
     const contextData = contextDataOf(hit);

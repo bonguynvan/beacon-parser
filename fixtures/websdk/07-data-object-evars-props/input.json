@@ -1,0 +1,27 @@
+{
+  "url": "https://edge.adobedc.net/ee/v1/interact?configId=fake-datastream-id-2222&requestId=req-0007",
+  "method": "POST",
+  "bodyJson": {
+    "events": [
+      {
+        "xdm": { "eventType": "web.webinteraction.linkClicks" },
+        "data": {
+          "__adobe": {
+            "analytics": {
+              "pageName": "checkout",
+              "pageURL": "https://www.example.com/checkout",
+              "events": "event1,event5=2.5",
+              "eVar12": "checkout-step-2",
+              "prop3": "checkout-flow",
+              "eVar999": "out-of-range",
+              "linkName": "place-order",
+              "linkURL": "https://www.example.com/order",
+              "linkType": "o",
+              "contextData": { "a.step": "2" }
+            }
+          }
+        }
+      }
+    ]
+  }
+}

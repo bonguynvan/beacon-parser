@@ -1,4 +1,4 @@
-import { eventIdsOf, pageNameOf } from "./hit-utils.js";
+import { eventIdsOf, evarsOf, pageNameOf, propsOf } from "./hit-utils.js";
 import type { AdobeHit, ChangedValue, HitDiffEntry, HitDiffResult } from "./types.js";
 
 const NO_PAGE_NAME_KEY = Symbol("no-pageName");
@@ -16,10 +16,11 @@ const NO_PAGE_NAME_KEY = Symbol("no-pageName");
  * positionally as a fallback bucket. Unmatched hits on either side are
  * reported as missing (before-only) or added (after-only).
  *
- * eVar/prop comparison only happens when both sides of a pair are
- * AppMeasurement hits -- Web SDK carries no numbered eVar/prop on the wire,
- * so a pair spanning generations (kindChanged: true) only compares
- * pageName and events.
+ * eVar/prop comparison covers AppMeasurement `eVars`/`props` and Web SDK
+ * `data.__adobe.analytics.eVarN`/`propN` alike, so a pair spanning
+ * generations (kindChanged: true) is compared too. eVars a Web SDK
+ * implementation sets through XDM or context data instead are mapped
+ * server-side and can't be compared here.
  */
 export function diffAdobeHits(before: AdobeHit[], after: AdobeHit[]): HitDiffResult {
   const beforeGroups = groupByPageName(before);
@@ -100,20 +101,21 @@ function diffPair(before: AdobeHit | undefined, after: AdobeHit | undefined): Hi
     kindChanged,
     missingEvents: beforeEvents.filter((id) => !afterEvents.includes(id)),
     addedEvents: afterEvents.filter((id) => !beforeEvents.includes(id)),
-    changedEvars: diffAppMeasurementFields(before, after, "eVars"),
-    changedProps: diffAppMeasurementFields(before, after, "props")
+    changedEvars: diffNumberedFields(before, after, "eVars"),
+    changedProps: diffNumberedFields(before, after, "props")
   };
 }
 
-function diffAppMeasurementFields(
+function diffNumberedFields(
   before: AdobeHit | undefined,
   after: AdobeHit | undefined,
   field: "eVars" | "props"
 ): ChangedValue[] {
-  if (before?.kind !== "appmeasurement" || after?.kind !== "appmeasurement") return [];
+  if (!before || !after) return [];
 
-  const beforeValues = before[field];
-  const afterValues = after[field];
+  const read = field === "eVars" ? evarsOf : propsOf;
+  const beforeValues = read(before);
+  const afterValues = read(after);
   const changes: ChangedValue[] = [];
 
   const indexes = new Set([...Object.keys(beforeValues), ...Object.keys(afterValues)]);

@@ -60,6 +60,34 @@ const EXAMPLES = [
     )
   },
   {
+    label: "Web SDK · eVars/props in data object",
+    url: "https://edge.adobedc.net/ee/v1/interact?configId=fake-datastream-id-2222&requestId=req-0002",
+    method: "POST",
+    body: JSON.stringify(
+      {
+        events: [
+          {
+            xdm: { eventType: "web.webinteraction.linkClicks" },
+            data: {
+              __adobe: {
+                analytics: {
+                  pageName: "checkout",
+                  events: "event1,event5=2.5",
+                  eVar12: "checkout-step-2",
+                  prop3: "checkout-flow",
+                  linkName: "place-order",
+                  linkType: "o"
+                }
+              }
+            }
+          }
+        ]
+      },
+      null,
+      2
+    )
+  },
+  {
     label: "Unrecognized URL",
     url: "https://example.com/some/other/path?foo=bar",
     method: "GET",

@@ -207,6 +207,16 @@ experienceleague.adobe.com over memory.
   `raw["lN"]` always keeps the un-split original regardless of the
   delimiter used.
   Source: https://experienceleague.adobe.com/en/docs/analytics/implementation/vars/page-vars/list
+- **Web SDK numbered eVars/props exist on the wire.** Adobe's recommended
+  path is `data.__adobe.analytics.eVarN` / `propN` (shorthand `vN` / `cN`),
+  lifted into typed `eVars` / `props` on the analytics block and exposed
+  through `evarsOf()` / `propsOf()` (which the matchers, tracking-plan and
+  `diffAdobeHits` use). This project once claimed "Web SDK has no numbered
+  eVar on the wire" — true only for the XDM / `contextData` path, whose
+  eVar mapping is server-side. `events` there is the events-variable string
+  form (`"event1,event2=5"`), which the parser once dropped because it only
+  read arrays. Details and the `TODO: verify` items: `docs/parameters.md`.
+  Source: https://experienceleague.adobe.com/en/docs/analytics/implementation/aep-edge/data-var-mapping
 - Long hits may switch to POST. First-party CNAME domains change the host, so
   detect by path/payload shape, not by hostname.
 
